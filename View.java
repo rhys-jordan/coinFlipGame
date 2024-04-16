@@ -78,7 +78,7 @@ public class View {
 
     public JPanel makeGameTab() {
         JPanel gamePanel = new JPanel();
-        gamePanel .setLayout(new GridBagLayout());
+        gamePanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.PAGE_START;
@@ -150,21 +150,33 @@ public class View {
     public JPanel makeLeaderboardTab() {
         JPanel leaderboardPanel = new JPanel();
         GridBagConstraints gbc = new GridBagConstraints();
+        leaderboardPanel.setLayout(new GridBagLayout());
         gbc.insets = new Insets(10,10,10,10);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         leaderboardPanel.add(new JLabel("TOP 3 USERS WITH THE HIGHEST BALANCE:"),gbc);
 
         DefaultListModel<String> model = new DefaultListModel<>();
-        //model.add(1,"test");
-        leaderboardList = new JList<String>(model);
+
+
+        model.addElement("user 1: $1000");
+        model.addElement("uasdadassaser 2: $7000");
+        model.addElement("user 3: $500");
 
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.insets = new Insets(10,50,50,50);
+        gbc.anchor = GridBagConstraints.PAGE_END;
+
+        leaderboardList = new JList<String>(model);
+
         leaderboardPanel.add(leaderboardList, gbc);
-
-
 
         return leaderboardPanel;
     }
