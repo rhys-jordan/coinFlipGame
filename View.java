@@ -1,9 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class View {
 
     JTabbedPane jTabs;
+
+    private boolean loggedIn = false;
+
+    private JPanel loginPanel;
 
     private JTextField usernameTextFeild;
     private JTextField passwordTextFeild;
@@ -36,7 +41,7 @@ public class View {
 
     public JPanel makeLoginTab() {
 
-        JPanel loginPanel = new JPanel();
+        loginPanel = new JPanel();
         loginPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -72,7 +77,6 @@ public class View {
         gbc.gridy = 2;
         loginPanel.add(signinButton,gbc);
 
-        // if logged in then return else throw error(for now just return anyway)
         return loginPanel;
     }
 
@@ -96,7 +100,6 @@ public class View {
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.LINE_START;
         gamePanel.add(new JLabel("BET OPTIONS:"),gbc);
-
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -179,5 +182,40 @@ public class View {
         leaderboardPanel.add(leaderboardList, gbc);
 
         return leaderboardPanel;
+    }
+
+    //STUFF FOR LOGIN TAB
+    void setLoginButtonListener(ActionListener aL) {
+        loginButton.addActionListener(aL);
+    }
+    public String getUsername() {
+        return usernameTextFeild.getText();
+    }
+
+    public String getPassword() {
+        return passwordTextFeild.getText();
+    }
+
+    // LISTENERS AND GETTERS(relevant functions) FOR GAME TAB
+    void setFlipButtonListener(ActionListener aL) {
+        flipButton.addActionListener(aL);
+    }
+
+    public String getBetAmount() {
+        return betTextField.getText();
+    }
+
+    public String getBetType() {
+        String betType;
+        if (headsButton.isSelected()) {
+            betType = "Heads";
+        }
+        else if (tailsButton.isSelected()) {
+            betType = "Tails";
+        }
+        else {
+            betType = "NO BUTTON SELECTED";
+        }
+        return betType;
     }
 }
