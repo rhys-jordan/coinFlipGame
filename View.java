@@ -138,7 +138,7 @@ public class View {
 
         gbc.gridx = 1;
         gbc.gridy = 4;
-        gbc.ipadx = 100;
+        gbc.gridwidth = 2;
         gamePanel.add(resultTextField,gbc);
 
         G1.add(headsButton);
