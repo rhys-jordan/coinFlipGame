@@ -6,12 +6,15 @@ import java.util.Objects;
 public class User {
 
     private View view;
+    private Account account;
 
     public User() {
         view = new View();
+        account = new Account();
 
         view.setLoginButtonListener(new loginButtonListener());
         view.setFlipButtonListener(new flipButtonListener());
+        view.setCreateAccountButtonListener(new createAccountButtonListener());
     }
 
 
@@ -63,4 +66,31 @@ public class User {
             }
         }
     }
+
+    class createAccountButtonListener implements ActionListener{
+        @Override
+        public void  actionPerformed(ActionEvent e) {
+            String username = view.getUsername();
+            String password = view.getPassword();
+
+            if(Objects.equals(username, "") & Objects.equals(password, "")) {
+                JOptionPane.showMessageDialog(view.jTabs, "Please enter something for your username and password!");
+            }
+            else if (Objects.equals(username, "")) {
+                JOptionPane.showMessageDialog(view.jTabs, "Please enter something for your username!");
+            }
+            else if(Objects.equals(password, "")) {
+                JOptionPane.showMessageDialog(view.jTabs, "Please enter something for your password!");
+            }
+            // have another else if to check if logged in = true, then dont log them in again. or can allow for it and just switch account info to new acct info
+            else { // should probably change to else if? in order to check if in db
+                //check if they already exist in db. then allow access to tabs (change a bool to true or something)
+                account.createAccount(username, password);
+                JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
+            }
+
+        }
+    }
+
+
 }

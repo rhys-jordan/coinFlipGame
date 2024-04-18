@@ -14,7 +14,7 @@ public class View {
     private JTextField passwordTextFeild;
 
     private JButton loginButton;
-    private JButton signinButton;
+    private JButton createAccountButton;
 
     private JRadioButton headsButton;
     private JRadioButton tailsButton;
@@ -52,7 +52,7 @@ public class View {
         passwordTextFeild = new JTextField(10);
 
         loginButton = new JButton("LOGIN");
-        signinButton = new JButton("CREATE ACCOUNT");
+        createAccountButton = new JButton("CREATE ACCOUNT");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -75,7 +75,7 @@ public class View {
 
         gbc.gridx = 1;
         gbc.gridy = 2;
-        loginPanel.add(signinButton,gbc);
+        loginPanel.add(createAccountButton,gbc);
 
         return loginPanel;
     }
@@ -199,6 +199,10 @@ public class View {
     // LISTENERS AND GETTERS(relevant functions) FOR GAME TAB
     void setFlipButtonListener(ActionListener aL) {
         flipButton.addActionListener(aL);
+    }
+
+    void setCreateAccountButtonListener(ActionListener aL) {
+        createAccountButton.addActionListener(aL);
     }
 
     public String getBetAmount() {
