@@ -22,7 +22,7 @@ public class Server {
                 // another try catch to connect to db
                 try {
                     connection = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
-                    System.out.println("success connecting to database");
+                    System.out.println("server> success connecting to database");
                     String cmd = "CREATE TABLE IF NOT EXISTS users (" +
                             "id INTEGER PRIMARY KEY," +
                             "username STRING," +

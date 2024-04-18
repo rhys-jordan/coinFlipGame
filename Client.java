@@ -8,7 +8,7 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Client { // this is our model i think
+public class Client {
 
     private Socket socket;
     private BufferedReader reader;
