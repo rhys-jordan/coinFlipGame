@@ -7,14 +7,17 @@ public class User {
 
     private View view;
     private Client client;
+    private Account account;
 
     public User() {
         view = new View();
         client = new Client();
+        account = new Account();
 
 
         view.setLoginButtonListener(new loginButtonListener());
         view.setFlipButtonListener(new flipButtonListener());
+        view.setCreateAccountButtonListener(new createAccountButtonActionListener());
 
     }
 
@@ -65,6 +68,18 @@ public class User {
 
                 JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
             }
+        }
+    }
+
+    class createAccountButtonActionListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String username = view.getUsername();
+            String password = view.getPassword();
+
+            String accountCreatedMsg =  account.createAccount(username, password);
+            JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
+
         }
     }
 }

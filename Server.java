@@ -1,9 +1,7 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Server {
     Connection connection = null;
@@ -38,7 +36,25 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
 
-
+    public void createUser(String username, String password){
+        try{
+            connection = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
+            Statement stmt = connection.createStatement();
+            String insert = "INSERT INTO users (username, password, balance, loggedIn)" +
+                    "VALUES (?,?,?,?);";
+            PreparedStatement prepStmt = connection.prepareStatement(insert);
+            //String add = "INSERT INTO cats (name) VALUES ('" + record + "');";
+            prepStmt.setString(1,username);
+            prepStmt.setString(2,password);
+            prepStmt.setInt(3,100);
+            prepStmt.setBoolean(4,false);
+            prepStmt.executeUpdate();
+            connection.close();
+        }catch (SQLException ex){
+            System.out.println("error chceck");
+            ex.printStackTrace();
+        }
     }
 }
