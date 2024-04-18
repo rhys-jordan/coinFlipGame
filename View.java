@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -25,10 +26,12 @@ public class View {
     private JTextField betTextField;
     private JTextField resultTextField;
 
+    DefaultListModel<String> model;
     private JList<String> leaderboardList;
 
     View() {
         JFrame jFrame = new JFrame();
+        model = new DefaultListModel<>();
         jTabs = new JTabbedPane();
         jTabs.add("LOGIN/CREATE ACC", makeLoginTab());
         jTabs.add("GAME WINDOW", makeGameTab());
@@ -37,6 +40,10 @@ public class View {
         jFrame.add(jTabs);
         jFrame.setSize(400,500);
         jFrame.setVisible(true);
+    }
+
+    public void setAddChangeListener(ChangeListener changeListener) {
+        jTabs.addChangeListener(changeListener);
     }
 
     public JPanel makeLoginTab() {
@@ -163,13 +170,11 @@ public class View {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         leaderboardPanel.add(new JLabel("TOP 3 USERS WITH THE HIGHEST BALANCE:"),gbc);
 
-        DefaultListModel<String> model = new DefaultListModel<>();
 
-        /*
         model.addElement("user 1: $1000");
         model.addElement("uasdadassaser 2: $7000");
         model.addElement("user 3: $500");
-         */
+
 
         gbc.gridx = 0;
         gbc.gridy = 1;

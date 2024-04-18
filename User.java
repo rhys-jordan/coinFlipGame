@@ -1,6 +1,9 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class User {
@@ -14,14 +17,27 @@ public class User {
         client = new Client();
         account = new Account();
 
-
+        view.setAddChangeListener(new jTabListener());
         view.setLoginButtonListener(new loginButtonListener());
         view.setFlipButtonListener(new flipButtonListener());
         view.setCreateAccountButtonListener(new createAccountButtonActionListener());
 
     }
 
+    public class jTabListener implements ChangeListener {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            // check if logged in?
+            ArrayList<String> arrayList;
 
+            String cmd = "SELECT * FROM users";
+            arrayList = client.searchData(cmd);
+            view.model.clear();
+            for (String s : arrayList) {
+                view.model.addElement(s);
+            }
+        }
+    }
 
     // GETS VALUES FROM BUTTON OPTIONS AND TEXT FIELD AND DOES ERROR CHECKING. NEED TO ADD SENDING TO DataBase
     class flipButtonListener implements ActionListener {
