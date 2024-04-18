@@ -6,12 +6,16 @@ import java.util.Objects;
 public class User {
 
     private View view;
+    private Client client;
 
     public User() {
         view = new View();
+        client = new Client();
+
 
         view.setLoginButtonListener(new loginButtonListener());
         view.setFlipButtonListener(new flipButtonListener());
+
     }
 
 

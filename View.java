@@ -165,10 +165,11 @@ public class View {
 
         DefaultListModel<String> model = new DefaultListModel<>();
 
-
+        /*
         model.addElement("user 1: $1000");
         model.addElement("uasdadassaser 2: $7000");
         model.addElement("user 3: $500");
+         */
 
         gbc.gridx = 0;
         gbc.gridy = 1;
