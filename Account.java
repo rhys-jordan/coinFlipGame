@@ -3,6 +3,7 @@ import java.sql.*;
 public class Account extends Server{
     private String username;
     private String password;
+    private boolean loggedIn = false;
     private double balance;
 
 
@@ -10,7 +11,7 @@ public class Account extends Server{
         if(username.isEmpty() || password.isEmpty()){
             return "Please enter something in both fields!";
         }
-        else if( verifyAccount(username, password) == 1){
+        else if( verifyAccount(username) == 1){
             return "Account exists please login";
         }
         else{
@@ -35,8 +36,8 @@ public class Account extends Server{
         }
     }
 
-    public int verifyAccount(String username, String password){
-        if(username.isEmpty() || password.isEmpty()){
+    public int verifyAccount(String username){
+        if(username.isEmpty()){
             return -1;
         }
         else {
@@ -55,6 +56,7 @@ public class Account extends Server{
                 if (results.next()) {
                     int count = results.getInt(1);
                     if(count == 1){
+                        this.username = username;
                         return 1;
                     }
                 }
@@ -65,6 +67,43 @@ public class Account extends Server{
             }
         }
         return 0;
+    }
+
+    public void login(String password){
+        if(password.isEmpty()){
+            System.out.println("Please enter something in username field");
+        }
+        else{
+            try {
+                connection = DriverManager.getConnection(uri);
+                Statement stmt = connection.createStatement();
+                String exist = "SELECT * " +
+                        "FROM users " +
+                        "WHERE EXISTS" +
+                        "(SELECT * FROM users WHERE " +
+                        "users.username = ? AND users.password = ? AND users.loggedIn = ?);";
+                PreparedStatement prepStmt = connection.prepareStatement(exist);
+                prepStmt.setString(1, username);
+                prepStmt.setString(2, password);
+                prepStmt.setBoolean(3,false);
+
+                ResultSet results = prepStmt.executeQuery();
+                //prepStmt.executeUpdate();
+                if (results.next()) {
+                    int count = results.getInt(1);
+                    if(count == 1){
+                        this.password = password;
+                        this.loggedIn = true;
+                    }
+                }
+                connection.close();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        System.out.println(username);
+
     }
 
 }

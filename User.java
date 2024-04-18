@@ -68,14 +68,14 @@ public class User {
         public void actionPerformed(ActionEvent e) {
             String username = view.getUsername();
             String password = view.getPassword();
-            int validAccount = account.verifyAccount(username,password);
+            int validAccount = account.verifyAccount(username);
 
             if(validAccount == 1){
-
+                account.login(password);
                 JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
             }
             else if (validAccount == -1){
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields!");
+                JOptionPane.showMessageDialog(view.jTabs, "Please enter something in username field");
             }
             else{
                 JOptionPane.showMessageDialog(view.jTabs, "Username or password incorrect, please try again or create an account");
