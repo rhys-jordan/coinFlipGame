@@ -3,10 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class Client {
 
@@ -26,5 +24,29 @@ public class Client {
         } catch(IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    // need to implement updates and checks
+    public ArrayList<String> searchData(String cmd) {
+        ArrayList<String> arrayList = new ArrayList<String>();
+
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
+            ResultSet rs = conn.createStatement().executeQuery(cmd);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int balance = rs.getInt("balance");
+                boolean loggedIn = rs.getBoolean("loggedIn");
+                String s = String.format("%3d %15s %15s %3d %3b",id,username,password,balance,loggedIn);
+                arrayList.add(s);
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return arrayList;
     }
 }

@@ -1,9 +1,12 @@
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Server {
     Connection connection = null;
@@ -38,7 +41,5 @@ public class Server {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-
     }
 }
