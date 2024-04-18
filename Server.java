@@ -4,7 +4,9 @@ import java.net.Socket;
 import java.sql.*;
 
 public class Server {
-    Connection connection = null;
+    protected Connection connection = null;
+    protected String uri = "jdbc:sqlite:userDatabase.db";
+
 
     public static void main(String[] args) {
         new Server().startServer();
@@ -19,7 +21,7 @@ public class Server {
                 System.out.println("server> connected to Socket: " + conn);
                 // another try catch to connect to db
                 try {
-                    connection = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
+                    connection = DriverManager.getConnection(uri);
                     System.out.println("server> success connecting to database");
                     String cmd = "CREATE TABLE IF NOT EXISTS users (" +
                             "id INTEGER PRIMARY KEY," +
@@ -40,7 +42,7 @@ public class Server {
 
     public void createUser(String username, String password){
         try{
-            connection = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
+            connection = DriverManager.getConnection(uri);
             Statement stmt = connection.createStatement();
             String insert = "INSERT INTO users (username, password, balance, loggedIn)" +
                     "VALUES (?,?,?,?);";

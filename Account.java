@@ -1,7 +1,4 @@
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Account extends Server{
     private String username;
@@ -13,10 +10,12 @@ public class Account extends Server{
         if(username.isEmpty() || password.isEmpty()){
             return "Please enter something in both fields!";
         }
-        //To Do check if account exists
+        else if( verifyAccount(username, password) == 1){
+            return "Account exists please login";
+        }
         else{
             try{
-                connection = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
+                connection = DriverManager.getConnection(uri);
                 Statement stmt = connection.createStatement();
                 String insert = "INSERT INTO users (username, password, balance, loggedIn)" +
                         "VALUES (?,?,?,?);";
@@ -36,5 +35,36 @@ public class Account extends Server{
         }
     }
 
+    public int verifyAccount(String username, String password){
+        if(username.isEmpty() || password.isEmpty()){
+            return -1;
+        }
+        else {
+            try {
+                connection = DriverManager.getConnection(uri);
+                Statement stmt = connection.createStatement();
+                String exist = "SELECT * " +
+                        "FROM users " +
+                        "WHERE EXISTS" +
+                        "(SELECT * FROM users WHERE " +
+                        "users.username = ?);";
+                PreparedStatement prepStmt = connection.prepareStatement(exist);
+                prepStmt.setString(1, username);
+                ResultSet results = prepStmt.executeQuery();
+                //prepStmt.executeUpdate();
+                if (results.next()) {
+                    int count = results.getInt(1);
+                    if(count == 1){
+                        return 1;
+                    }
+                }
+                connection.close();
+                return 0;
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return 0;
+    }
 
 }
