@@ -108,8 +108,20 @@ public class User {
             String username = view.getUsername();
             String password = view.getPassword();
 
-            String accountCreatedMsg =  account.createAccount(username, password);
-            JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
+            int validAccountCreated =  account.createAccount(username, password);
+            //JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
+
+            if(validAccountCreated == 1){
+                JOptionPane.showMessageDialog(view.jTabs, "Account Created");
+            }
+            else if (validAccountCreated == -1){
+                JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
+            }
+            else{
+                JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
+            }
+
+
 
         }
     }
