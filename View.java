@@ -21,7 +21,7 @@ public class View {
     private JRadioButton tailsButton;
     private ButtonGroup G1;
 
-    private JButton flipButton;
+    private JButton flipButton = new JButton("FLIP COIN");
 
     private JTextField betTextField;
     private JTextField resultTextField;
@@ -97,7 +97,7 @@ public class View {
         headsButton = new JRadioButton();
         tailsButton = new JRadioButton();
         G1 = new ButtonGroup();
-        flipButton = new JButton("FLIP COIN");
+
 
         betTextField = new JTextField(10);
         resultTextField = new JTextField(0);

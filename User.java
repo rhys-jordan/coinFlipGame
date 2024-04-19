@@ -35,14 +35,6 @@ public class User {
             for (String s : arrayList) {
                 view.model.addElement(s);
             }
-            if(account.getLoggedIn()) {
-                view.jTabs.add("GAME WINDOW", view.makeGameTab());
-                view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
-            }
-            else {
-                System.out.println("error, login first");
-            }
-
         }
     }
 
@@ -105,7 +97,15 @@ public class User {
                 JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
             }
 
+
              */
+            if(account.getLoggedIn()) {
+                view.jTabs.add("GAME WINDOW", view.makeGameTab());
+                view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
+            }
+            else {
+                System.out.println("error, login first");
+            }
         }
     }
 
