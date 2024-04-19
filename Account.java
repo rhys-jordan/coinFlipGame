@@ -6,6 +6,9 @@ public class Account extends Server{
     private boolean loggedIn = false;
     private double balance;
 
+    public boolean getLoggedIn() {
+        return loggedIn;
+    }
 
     public String createAccount(String username, String password){
         if(username.isEmpty() || password.isEmpty()){
