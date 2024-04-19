@@ -10,12 +10,12 @@ public class Account extends Server{
         return loggedIn;
     }
 
-    public String createAccount(String username, String password){
+    public int createAccount(String username, String password){
         if(username.isEmpty() || password.isEmpty()){
-            return "Please enter something in both fields!";
+            return -1;
         }
-        else if( verifyAccount(username) == 1){
-            return "Account exists please login";
+        else if(verifyAccount(username) == 1){
+            return 0;
         }
         else{
             try{
@@ -35,7 +35,7 @@ public class Account extends Server{
                 System.out.println("error chceck");
                 ex.printStackTrace();
             }
-            return "Account Created";
+            return 1;
         }
     }
 
