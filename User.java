@@ -21,7 +21,6 @@ public class User {
         view.setLoginButtonListener(new loginButtonListener());
         view.setFlipButtonListener(new flipButtonListener());
         view.setCreateAccountButtonListener(new createAccountButtonActionListener());
-
     }
 
     public class jTabListener implements ChangeListener {
@@ -36,6 +35,14 @@ public class User {
             for (String s : arrayList) {
                 view.model.addElement(s);
             }
+            if(account.getLoggedIn()) {
+                view.jTabs.add("GAME WINDOW", view.makeGameTab());
+                view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
+            }
+            else {
+                System.out.println("error, login first");
+            }
+
         }
     }
 

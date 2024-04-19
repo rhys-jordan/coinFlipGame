@@ -34,8 +34,7 @@ public class View {
         model = new DefaultListModel<>();
         jTabs = new JTabbedPane();
         jTabs.add("LOGIN/CREATE ACC", makeLoginTab());
-        jTabs.add("GAME WINDOW", makeGameTab());
-        jTabs.add("LEADERBOARD", makeLeaderboardTab());
+
 
         jFrame.add(jTabs);
         jFrame.setSize(400,500);
