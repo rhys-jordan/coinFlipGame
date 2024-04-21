@@ -136,6 +136,7 @@ public class Account extends Server{
     }
 
     public void addBalance(Double winnings) {
+        /*
         double currentBalance = getAccountBalance();
         double newBalance = currentBalance + winnings;
 
@@ -154,9 +155,12 @@ public class Account extends Server{
             ex.printStackTrace();
             System.out.println("error increasing balance");
         }
+
+         */
     }
 
     public void removeBalance(Double losings) {
+        /*
         double currentBalance = getAccountBalance();
         double newBalance = currentBalance - losings;
 
@@ -175,5 +179,7 @@ public class Account extends Server{
             ex.printStackTrace();
             System.out.println("error decreasing balance");
         }
+
+         */
     }
 }
