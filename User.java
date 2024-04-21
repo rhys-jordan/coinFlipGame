@@ -11,6 +11,7 @@ public class User {
     private View view;
     private Client client;
     private Account account;
+    private boolean tabsMade = false;
 
     public User() {
         view = new View();
@@ -99,12 +100,10 @@ public class User {
 
 
              */
-            if(account.getLoggedIn()) {
+            if(account.getLoggedIn() && !tabsMade) {
                 view.jTabs.add("GAME WINDOW", view.makeGameTab());
                 view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
-            }
-            else {
-                System.out.println("error, login first");
+                tabsMade = true;
             }
         }
     }
