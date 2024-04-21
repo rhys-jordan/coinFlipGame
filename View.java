@@ -25,6 +25,7 @@ public class View {
 
     private JTextField betTextField;
     private JTextField resultTextField;
+    private JTextField currentBalanceTextField;
 
     DefaultListModel<String> model;
     private JList<String> leaderboardList;
@@ -37,7 +38,7 @@ public class View {
 
 
         jFrame.add(jTabs);
-        jFrame.setSize(400,500);
+        jFrame.setSize(600,500);
         jFrame.setVisible(true);
     }
 
@@ -99,8 +100,9 @@ public class View {
         G1 = new ButtonGroup();
 
 
-        betTextField = new JTextField(10);
+        betTextField = new JTextField(0);
         resultTextField = new JTextField(0);
+        currentBalanceTextField = new JTextField(0);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -134,6 +136,7 @@ public class View {
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.ipadx = 200;
         gamePanel.add(betTextField, gbc);
 
         gbc.gridx = 0;
@@ -149,6 +152,16 @@ public class View {
         gbc.gridy = 4;
         gbc.gridwidth = 2;
         gamePanel.add(resultTextField,gbc);
+
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gamePanel.add(new JLabel("BALANCE:"),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gamePanel.add(currentBalanceTextField,gbc);
 
         G1.add(headsButton);
         G1.add(tailsButton);
@@ -217,14 +230,22 @@ public class View {
     public String getBetType() {
         String betType;
         if (headsButton.isSelected()) {
-            betType = "Heads";
+            betType = "HEADS";
         }
         else if (tailsButton.isSelected()) {
-            betType = "Tails";
+            betType = "TAILS";
         }
         else {
             betType = "NO BUTTON SELECTED";
         }
         return betType;
+    }
+
+    public void setResultTextField(String outcome) {
+        resultTextField.setText(outcome);
+    }
+
+    public void setCurrentBalanceTextField(Double bal) {
+        currentBalanceTextField.setText(String.valueOf(bal));
     }
 }

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 public class User {
 
@@ -22,6 +23,19 @@ public class User {
         view.setLoginButtonListener(new loginButtonListener());
         view.setFlipButtonListener(new flipButtonListener());
         view.setCreateAccountButtonListener(new createAccountButtonActionListener());
+    }
+
+    public String flipCoin() {
+        Random rand = new Random();
+
+        int outcome = rand.nextInt(2);
+
+        if(outcome == 1) {
+            return "HEADS";
+        }
+        else{
+            return "TAILS";
+        }
     }
 
     public class jTabListener implements ChangeListener {
@@ -44,21 +58,47 @@ public class User {
         @Override
         public void actionPerformed(ActionEvent e) {
             String betAmount = view.getBetAmount();
+            Double accountBalance = account.getAccountBalance();
+
             try {
-                Integer.parseInt(betAmount);
-            } catch (NumberFormatException nfe){
-                JOptionPane.showMessageDialog(view.jTabs, "please enter integer input or make sure input is an integer!");
+                double bet = Double.parseDouble(betAmount);
+                if(bet != (int)bet) {
+                    JOptionPane.showMessageDialog(view.jTabs, "please enter integer input or make sure input is an integer!");
+                    return;
+                }
+                else if (bet > accountBalance) {
+                    JOptionPane.showMessageDialog(view.jTabs, "you cannot bet more than you have in your account");
+                    return;
+                }
+            } catch (NumberFormatException ex){
+                JOptionPane.showMessageDialog(view.jTabs, "please enter valid input for bet. must be a number");
+                return;
             }
-            // send betAmount to server/database (should maybe be in try?)
 
             String betType = view.getBetType();
             if(Objects.equals(betType, "NO BUTTON SELECTED")) {
                 JOptionPane.showMessageDialog(view.jTabs, "Please select heads or tails for your bet!");
-            }
-            else {
-                // then send betType into server/db for game logic
+                return;
             }
 
+            // then send betType into server/db for game logic
+            String outcome = flipCoin();
+            if(Objects.equals(outcome, betType)) {
+                String sendOutcome = "Result = " + outcome + ", you win " + betAmount + " dollars!";
+                view.setResultTextField(sendOutcome);
+                double bet = Double.parseDouble(betAmount);
+                account.addBalance(bet);
+                double currentBalance = account.getAccountBalance();
+                view.setCurrentBalanceTextField(currentBalance);
+            }
+            else {
+                String sendOutcome = "Result = " + outcome + ", you lost " + betAmount + " dollars :(";
+                view.setResultTextField(sendOutcome);
+                double bet = Double.parseDouble(betAmount);
+                account.removeBalance(bet);
+                double currentBalance = account.getAccountBalance();
+                view.setCurrentBalanceTextField(currentBalance);
+            }
         }
     }
 
@@ -105,6 +145,9 @@ public class User {
                 view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
                 tabsMade = true;
             }
+            if(tabsMade) {
+
+            }
         }
     }
 
@@ -126,9 +169,6 @@ public class User {
             else{
                 JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
             }
-
-
-
         }
     }
 }

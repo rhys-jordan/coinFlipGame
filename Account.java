@@ -73,7 +73,7 @@ public class Account extends Server{
     }
 
     public void login(String password){
-        if(password.isEmpty()){
+        if(password.isEmpty() || username.isEmpty()){
             System.out.println("Please enter something in username field");
         }
         else{
@@ -106,7 +106,74 @@ public class Account extends Server{
             }
         }
         System.out.println(username);
-
     }
 
+    public double getAccountBalance() {
+        try {
+            connection = DriverManager.getConnection(uri);
+            Statement stmt = connection.createStatement();
+            String query = "SELECT balance " +
+                    "FROM users " +
+                    "WHERE username = ?;";
+
+            PreparedStatement prepStmt = connection.prepareStatement(query);
+            prepStmt.setString(1,username);
+            ResultSet results = prepStmt.executeQuery();
+
+            if(results.next()) {
+                balance = results.getDouble("balance");
+                return balance;
+            }
+            else {
+                System.out.println("Error: couldn't get balance");
+                return -1;
+            }
+
+        } catch (SQLException ex){
+            ex.printStackTrace();
+            return  -1;
+        }
+    }
+
+    public void addBalance(Double winnings) {
+        double currentBalance = getAccountBalance();
+        double newBalance = currentBalance + winnings;
+
+        try {
+            connection = DriverManager.getConnection(uri);
+            Statement stmt = connection.createStatement();
+            String updateQuery = "UPDATE users " +
+                    "SET balance = ? " +
+                    "WHERE username = ?";
+            PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
+            prepStmt.setDouble(1,newBalance);
+            prepStmt.setString(2,username);
+            prepStmt.executeUpdate();
+            balance = newBalance;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("error increasing balance");
+        }
+    }
+
+    public void removeBalance(Double losings) {
+        double currentBalance = getAccountBalance();
+        double newBalance = currentBalance - losings;
+
+        try {
+            connection = DriverManager.getConnection(uri);
+            Statement stmt = connection.createStatement();
+            String updateQuery = "UPDATE users " +
+                    "SET balance = ? " +
+                    "WHERE username = ?";
+            PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
+            prepStmt.setDouble(1,newBalance);
+            prepStmt.setString(2,username);
+            prepStmt.executeUpdate();
+            balance = newBalance;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("error decreasing balance");
+        }
+    }
 }

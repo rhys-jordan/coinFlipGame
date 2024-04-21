@@ -40,6 +40,8 @@ public class Server {
         }
     }
 
+    /*
+
     public void createUser(String username, String password){
         try{
             connection = DriverManager.getConnection(uri);
@@ -55,8 +57,9 @@ public class Server {
             prepStmt.executeUpdate();
             connection.close();
         }catch (SQLException ex){
-            System.out.println("error chceck");
+            System.out.println("error check");
             ex.printStackTrace();
         }
     }
+     */
 }
