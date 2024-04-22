@@ -83,15 +83,25 @@ public class Account extends Server{
                 prepStmt.setBoolean(3,false);
 
                 ResultSet results = prepStmt.executeQuery();
-                //System.out.println(results);
+                //System.out.println(results.next());
                 //prepStmt.executeUpdate();
+
                 if (results.next()) {
-                    int count = results.getInt(1);
-                    if(count == 1){
-                        this.password = password;
-                        this.loggedIn = true;
-                    }
+                    int id = results.getInt("id");
+                    System.out.println("COunt " + id);
+                    //this.password = password;
+                    this.loggedIn = true;
+                    /*
+                    String cmd = "UPDATE users" +
+                            "SET users.loggedIn = ?" +
+                            "WHERE id = ?;";
+                    PreparedStatement update = connection.prepareStatement(cmd);
+                    update.setBoolean(1, true);
+                    update.setInt(2, id);
+                    update.executeUpdate();
+                     */
                 }
+
                 connection.close();
 
             } catch (SQLException ex) {
