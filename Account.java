@@ -113,7 +113,7 @@ public class Account extends Server{
     public double getAccountBalance() {
         try {
             connection = DriverManager.getConnection(uri);
-            Statement stmt = connection.createStatement();
+            //Statement stmt = connection.createStatement();
             String query = "SELECT balance " +
                     "FROM users " +
                     "WHERE username = ?;";
@@ -124,10 +124,12 @@ public class Account extends Server{
 
             if(results.next()) {
                 balance = results.getDouble("balance");
+                connection.close();
                 return balance;
             }
             else {
                 System.out.println("Error: couldn't get balance");
+                connection.close();
                 return -1;
             }
 
@@ -144,7 +146,7 @@ public class Account extends Server{
 
         try {
             connection = DriverManager.getConnection(uri);
-            Statement stmt = connection.createStatement();
+            //Statement stmt = connection.createStatement();
             String updateQuery = "UPDATE users " +
                     "SET balance = ? " +
                     "WHERE username = ?";
@@ -153,6 +155,7 @@ public class Account extends Server{
             prepStmt.setString(2,username);
             prepStmt.executeUpdate();
             balance = newBalance;
+            connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("error increasing balance");
@@ -168,7 +171,7 @@ public class Account extends Server{
 
         try {
             connection = DriverManager.getConnection(uri);
-            Statement stmt = connection.createStatement();
+            //Statement stmt = connection.createStatement();
             String updateQuery = "UPDATE users " +
                     "SET balance = ? " +
                     "WHERE username = ?";
@@ -177,6 +180,7 @@ public class Account extends Server{
             prepStmt.setString(2,username);
             prepStmt.executeUpdate();
             balance = newBalance;
+            connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("error decreasing balance");

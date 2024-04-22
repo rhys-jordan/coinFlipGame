@@ -207,6 +207,7 @@ public class View {
     void setLoginButtonListener(ActionListener aL) {
         loginButton.addActionListener(aL);
     }
+
     public String getUsername() {
         return usernameTextFeild.getText();
     }

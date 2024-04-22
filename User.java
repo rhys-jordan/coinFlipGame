@@ -44,6 +44,7 @@ public class User {
             // check if logged in?
             ArrayList<String> arrayList;
 
+            // TODO CHANGE THIS
             String cmd = "SELECT * FROM users";
             arrayList = client.searchData(cmd);
             view.model.clear();
@@ -85,6 +86,7 @@ public class User {
 
             // then send betType into server/db for game logic
             String outcome = flipCoin();
+
             if(Objects.equals(outcome, betType)) {
                 String sendOutcome = "Result = " + outcome + ", you win " + betAmount + " dollars!";
                 view.setResultTextField(sendOutcome);
@@ -112,7 +114,10 @@ public class User {
             String password = view.getPassword();
             int validAccount = account.verifyAccount(username);
 
-            if(validAccount == 1){
+            if(account.getLoggedIn()) {
+                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
+            }
+            else if(validAccount == 1){
                 account.login(password);
                 JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
             }
@@ -122,29 +127,9 @@ public class User {
             else{
                 JOptionPane.showMessageDialog(view.jTabs, "Username or password incorrect, please try again or create an account");
             }
-            // NOTES TO DO:
-                // need to get login bool from database, upon logging in set it to true. if its true dont let them login again
-                // should probably have succesfully logging in after error checking
+
                 // upon exit need to set boolean in database to false
-            /*
-            if(Objects.equals(username, "") & Objects.equals(password, "")) {
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something for your username and password!");
-            }
-            else if (Objects.equals(username, "")) {
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something for your username!");
-            }
-            else if(Objects.equals(password, "")) {
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something for your password!");
-            }
-            // have another else if to check if logged in = true, then dont log them in again. or can allow for it and just switch account info to new acct info
-            else { // should probably change to else if? in order to check if in db
-                //check if they already exist in db. then allow access to tabs (change a bool to true or something)
 
-                JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
-            }
-
-
-             */
             if(account.getLoggedIn() && !tabsMade) {
                 view.jTabs.add("GAME WINDOW", view.makeGameTab());
                 view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
