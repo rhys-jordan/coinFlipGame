@@ -20,11 +20,9 @@ public class Account extends Server{
         else{
             try{
                 connection = DriverManager.getConnection(uri);
-                Statement stmt = connection.createStatement();
-                String insert = "INSERT INTO users (username, password, balance, loggedIn)" +
+                String insert = "INSERT INTO users (username, password, balance, loggedIn) " +
                         "VALUES (?,?,?,?);";
                 PreparedStatement prepStmt = connection.prepareStatement(insert);
-                //String add = "INSERT INTO cats (name) VALUES ('" + record + "');";
                 prepStmt.setString(1,username);
                 prepStmt.setString(2,password);
                 prepStmt.setInt(3,100);
@@ -46,16 +44,12 @@ public class Account extends Server{
         else {
             try {
                 connection = DriverManager.getConnection(uri);
-                Statement stmt = connection.createStatement();
-                String exist = "SELECT * " +
+                String exist = "SELECT COUNT(id) " +
                         "FROM users " +
-                        "WHERE EXISTS" +
-                        "(SELECT * FROM users WHERE " +
-                        "users.username = ?);";
+                        "WHERE users.username = ?;" ;
                 PreparedStatement prepStmt = connection.prepareStatement(exist);
                 prepStmt.setString(1, username);
                 ResultSet results = prepStmt.executeQuery();
-                //prepStmt.executeUpdate();
                 if (results.next()) {
                     int count = results.getInt(1);
                     if(count == 1){
@@ -67,9 +61,10 @@ public class Account extends Server{
                 return 0;
             } catch (SQLException ex) {
                 ex.printStackTrace();
+                return 3;
             }
+
         }
-        return 0;
     }
 
     public void login(String password){
@@ -79,18 +74,16 @@ public class Account extends Server{
         else{
             try {
                 connection = DriverManager.getConnection(uri);
-                Statement stmt = connection.createStatement();
-                String exist = "SELECT * " +
+                String exist = "SELECT id " +
                         "FROM users " +
-                        "WHERE EXISTS" +
-                        "(SELECT * FROM users WHERE " +
-                        "users.username = ? AND users.password = ? AND users.loggedIn = ?);";
+                        "WHERE users.username = ? AND users.password = ? AND users.loggedIn = ?;" ;
                 PreparedStatement prepStmt = connection.prepareStatement(exist);
                 prepStmt.setString(1, username);
                 prepStmt.setString(2, password);
                 prepStmt.setBoolean(3,false);
 
                 ResultSet results = prepStmt.executeQuery();
+                //System.out.println(results);
                 //prepStmt.executeUpdate();
                 if (results.next()) {
                     int count = results.getInt(1);
@@ -105,7 +98,6 @@ public class Account extends Server{
                 ex.printStackTrace();
             }
         }
-        System.out.println(username);
     }
 
     public double getAccountBalance() {

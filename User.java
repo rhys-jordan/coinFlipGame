@@ -166,8 +166,11 @@ public class User {
             else if (validAccountCreated == -1){
                 JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
             }
-            else{
+            else if (validAccountCreated == 0){
                 JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
+            }
+            else{
+                JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
             }
         }
     }
