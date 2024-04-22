@@ -91,16 +91,18 @@ public class User {
                 String sendOutcome = "Result = " + outcome + ", you win " + betAmount + " dollars!";
                 view.setResultTextField(sendOutcome);
                 double bet = Double.parseDouble(betAmount);
-                account.addBalance(bet);
                 double currentBalance = account.getAccountBalance();
+                account.addBalance(bet, currentBalance);
+                currentBalance = account.getAccountBalance();
                 view.setCurrentBalanceTextField(currentBalance);
             }
             else {
                 String sendOutcome = "Result = " + outcome + ", you lost " + betAmount + " dollars :(";
                 view.setResultTextField(sendOutcome);
                 double bet = Double.parseDouble(betAmount);
-                account.removeBalance(bet);
                 double currentBalance = account.getAccountBalance();
+                account.removeBalance(bet, currentBalance);
+                currentBalance = account.getAccountBalance();
                 view.setCurrentBalanceTextField(currentBalance);
             }
         }

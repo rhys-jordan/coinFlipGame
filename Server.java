@@ -27,7 +27,7 @@ public class Server {
                             "id INTEGER PRIMARY KEY," +
                             "username STRING," +
                             "password STRING," +
-                            "balance INTEGER," +
+                            "balance DOUBLE," +
                             "loggedIn BOOLEAN);";
                     connection.createStatement().executeUpdate(cmd);
                     connection.close();

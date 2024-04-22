@@ -101,7 +101,6 @@ public class Account extends Server{
                     update.executeUpdate();
                      */
                 }
-
                 connection.close();
 
             } catch (SQLException ex) {
@@ -114,9 +113,9 @@ public class Account extends Server{
         try {
             connection = DriverManager.getConnection(uri);
             //Statement stmt = connection.createStatement();
-            String query = "SELECT balance " +
+            String query = "SELECT users.balance " +
                     "FROM users " +
-                    "WHERE username = ?;";
+                    "WHERE users.username = ?;";
 
             PreparedStatement prepStmt = connection.prepareStatement(query);
             prepStmt.setString(1,username);
@@ -139,17 +138,18 @@ public class Account extends Server{
         }
     }
 
-    public void addBalance(Double winnings) {
-        /*
-        double currentBalance = getAccountBalance();
+    public void addBalance(double winnings, double currentBalance) {
+
         double newBalance = currentBalance + winnings;
 
         try {
             connection = DriverManager.getConnection(uri);
             //Statement stmt = connection.createStatement();
+            System.out.println("new balance = " + newBalance + " username = " + username);
+
             String updateQuery = "UPDATE users " +
-                    "SET balance = ? " +
-                    "WHERE username = ?";
+                    "SET users.balance = ? " +
+                    "WHERE users.username = ?;";
             PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
             prepStmt.setDouble(1,newBalance);
             prepStmt.setString(2,username);
@@ -160,21 +160,19 @@ public class Account extends Server{
             ex.printStackTrace();
             System.out.println("error increasing balance");
         }
-
-         */
     }
 
-    public void removeBalance(Double losings) {
-        /*
-        double currentBalance = getAccountBalance();
+    public void removeBalance(double losings, double currentBalance) {
+
         double newBalance = currentBalance - losings;
 
         try {
             connection = DriverManager.getConnection(uri);
+            System.out.println("new balance = " + newBalance + " username = " + username);
             //Statement stmt = connection.createStatement();
             String updateQuery = "UPDATE users " +
-                    "SET balance = ? " +
-                    "WHERE username = ?";
+                    "SET users.balance = ? " +
+                    "WHERE users.username = ?;";
             PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
             prepStmt.setDouble(1,newBalance);
             prepStmt.setString(2,username);
@@ -185,7 +183,5 @@ public class Account extends Server{
             ex.printStackTrace();
             System.out.println("error decreasing balance");
         }
-
-         */
     }
 }
