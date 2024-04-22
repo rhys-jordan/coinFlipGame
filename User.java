@@ -48,6 +48,8 @@ public class User {
             arrayList = client.searchData(cmd);
             view.model.clear();
             for (String s : arrayList) {
+                // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)
+                // should reformat cmd to only get relevant information. i.e. only display username and balance (definitely wouldn't want to display password)
                 view.model.addElement(s);
             }
         }
@@ -120,7 +122,10 @@ public class User {
             else{
                 JOptionPane.showMessageDialog(view.jTabs, "Username or password incorrect, please try again or create an account");
             }
-
+            // NOTES TO DO:
+                // need to get login bool from database, upon logging in set it to true. if its true dont let them login again
+                // should probably have succesfully logging in after error checking
+                // upon exit need to set boolean in database to false
             /*
             if(Objects.equals(username, "") & Objects.equals(password, "")) {
                 JOptionPane.showMessageDialog(view.jTabs, "Please enter something for your username and password!");
@@ -146,7 +151,7 @@ public class User {
                 tabsMade = true;
             }
             if(tabsMade) {
-
+                // idk why this if check is here can prolly delete it
             }
         }
     }
