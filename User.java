@@ -134,7 +134,8 @@ public class User {
                 // upon exit need to set boolean in database to false
 
             if(account.getLoggedIn() && !tabsMade) {
-                view.jTabs.add("GAME WINDOW", view.makeGameTab());
+                view.jTabs.add("COIN GAME", view.makeGameTab());
+                view.jTabs.add("DICE GAME",view.makeDiceTab());
                 view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
                 tabsMade = true;
             }

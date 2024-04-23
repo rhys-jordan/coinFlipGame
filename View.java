@@ -11,8 +11,8 @@ public class View {
 
     private JPanel loginPanel;
 
-    private JTextField usernameTextFeild;
-    private JTextField passwordTextFeild;
+    private JTextField usernameTextField;
+    private JTextField passwordTextField;
 
     private JButton loginButton;
     private JButton createAccountButton;
@@ -26,6 +26,17 @@ public class View {
     private JTextField betTextField;
     private JTextField resultTextField;
     private JTextField currentBalanceTextField;
+
+    // GUI ELEMENTS FOR DICE TAB
+    private JTextField diceBetTextField;
+    private JTextField diceResultTextField;
+    private JTextField diceBalanceTextField;
+
+    private JButton rollButton = new JButton("ROLL DICE");
+
+    private JComboBox diceBox;
+
+    String diceOptions[] = {"ONE","TWO","THREE","FOUR","FIVE"};
 
     DefaultListModel<String> model;
     private JList<String> leaderboardList;
@@ -55,8 +66,8 @@ public class View {
 
         gbc.insets = new Insets(10,10,10,10);
 
-        usernameTextFeild = new JTextField(10);
-        passwordTextFeild = new JTextField(10);
+        usernameTextField = new JTextField(10);
+        passwordTextField = new JTextField(10);
 
         loginButton = new JButton("LOGIN");
         createAccountButton = new JButton("CREATE ACCOUNT");
@@ -67,14 +78,14 @@ public class View {
         loginPanel.add(new JLabel("USERNAME:"),gbc);
 
         gbc.gridx = 1;
-        loginPanel.add(usernameTextFeild, gbc);
+        loginPanel.add(usernameTextField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         loginPanel.add(new JLabel("PASSWORD"),gbc);
 
         gbc.gridx = 1;
-        loginPanel.add(passwordTextFeild,gbc);
+        loginPanel.add(passwordTextField,gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -107,7 +118,7 @@ public class View {
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.LINE_START;
-        gamePanel.add(new JLabel("BET OPTIONS:"),gbc);
+        gamePanel.add(new JLabel("COIN FLIP BET OPTIONS:"),gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -183,12 +194,6 @@ public class View {
         gbc.insets = new Insets(10,160,10,10);
         leaderboardPanel.add(new JLabel("TOP 3 USERS WITH THE HIGHEST BALANCE:"),gbc);
 
-
-        model.addElement("user 1: $1000");
-        model.addElement("uasdadassaser 2: $7000");
-        model.addElement("user 3: $500");
-
-
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 1.0;
@@ -203,17 +208,78 @@ public class View {
         return leaderboardPanel;
     }
 
+    public JPanel makeDiceTab() {
+        JPanel dicePanel = new JPanel();
+        GridBagConstraints gbc = new GridBagConstraints();
+        dicePanel.setLayout(new GridBagLayout());
+
+        diceBetTextField = new JTextField(0);
+        diceResultTextField = new JTextField(0);
+        diceBalanceTextField = new JTextField(0);
+
+        String diceOptions[] = {"ONE","TWO","THREE","FOUR","FIVE","SIX"};
+
+        diceBox = new JComboBox(diceOptions);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.insets = new Insets(10,10,10,10);
+        dicePanel.add(new JLabel("DICE ROLL BET OPTIONS:"),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        dicePanel.add(diceBox,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        dicePanel.add(new JLabel("BET AMOUNT:"),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.ipadx = 200;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        dicePanel.add(diceBetTextField,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.insets = new Insets(10,10,10,10);
+        dicePanel.add(rollButton,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        dicePanel.add(new JLabel("BET RESULT:"),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.ipadx = 200;
+        gbc.insets = new Insets(10,10,10,10);
+        dicePanel.add(diceResultTextField,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        dicePanel.add(new JLabel("BALANCE:"),gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.ipadx = 200;
+        gbc.insets = new Insets(10,10,10,10);
+        dicePanel.add(diceBalanceTextField,gbc);
+
+        return dicePanel;
+    }
+
     //STUFF FOR LOGIN TAB
     void setLoginButtonListener(ActionListener aL) {
         loginButton.addActionListener(aL);
     }
 
     public String getUsername() {
-        return usernameTextFeild.getText();
+        return usernameTextField.getText();
     }
 
     public String getPassword() {
-        return passwordTextFeild.getText();
+        return passwordTextField.getText();
     }
 
     // LISTENERS AND GETTERS(relevant functions) FOR GAME TAB
