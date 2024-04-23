@@ -4,7 +4,7 @@ public class Account extends Server{
     private String username;
     private String password;
     private boolean loggedIn = false;
-    private double balance;
+    private double localBalance;
 
     public boolean getLoggedIn() {
         return loggedIn;
@@ -28,10 +28,19 @@ public class Account extends Server{
                 prepStmt.setInt(3,100);
                 prepStmt.setBoolean(4,false);
                 prepStmt.executeUpdate();
-                connection.close();
-            }catch (SQLException ex){
+                //connection.close();
+            } catch (SQLException ex){
                 System.out.println("error chceck");
                 ex.printStackTrace();
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
             }
             return 1;
         }
@@ -57,11 +66,20 @@ public class Account extends Server{
                         return 1;
                     }
                 }
-                connection.close();
+                //connection.close();
                 return 0;
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 return 3;
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
             }
 
         }
@@ -101,10 +119,19 @@ public class Account extends Server{
                     update.executeUpdate();
                      */
                 }
-                connection.close();
+                //connection.close();
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
             }
         }
     }
@@ -122,19 +149,28 @@ public class Account extends Server{
             ResultSet results = prepStmt.executeQuery();
 
             if(results.next()) {
-                balance = results.getDouble("balance");
-                connection.close();
-                return balance;
+                localBalance = results.getDouble("balance");
+                //connection.close();
+                return localBalance;
             }
             else {
                 System.out.println("Error: couldn't get balance");
-                connection.close();
+                //connection.close();
                 return -1;
             }
 
         } catch (SQLException ex){
             ex.printStackTrace();
             return  -1;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
         }
     }
 
@@ -148,17 +184,26 @@ public class Account extends Server{
             System.out.println("new balance = " + newBalance + " username = " + username);
 
             String updateQuery = "UPDATE users " +
-                    "SET users.balance = ? " +
-                    "WHERE users.username = ?;";
+                    "SET balance = ? " +
+                    "WHERE username = ?;";
             PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
             prepStmt.setDouble(1,newBalance);
             prepStmt.setString(2,username);
             prepStmt.executeUpdate();
-            balance = newBalance;
-            connection.close();
+            localBalance = newBalance;
+            //connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("error increasing balance");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
         }
     }
 
@@ -171,17 +216,26 @@ public class Account extends Server{
             System.out.println("new balance = " + newBalance + " username = " + username);
             //Statement stmt = connection.createStatement();
             String updateQuery = "UPDATE users " +
-                    "SET users.balance = ? " +
-                    "WHERE users.username = ?;";
+                    "SET balance = ? " +
+                    "WHERE username = ?;";
             PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
             prepStmt.setDouble(1,newBalance);
             prepStmt.setString(2,username);
             prepStmt.executeUpdate();
-            balance = newBalance;
-            connection.close();
+            localBalance = newBalance;
+            //connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("error decreasing balance");
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
         }
     }
 }
