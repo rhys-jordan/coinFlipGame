@@ -12,12 +12,14 @@ public class User {
     private View view;
     private Client client;
     private Account account;
+    private Leaderboard leaderboard;
     private boolean tabsMade = false;
 
     public User() {
         view = new View();
         client = new Client();
         account = new Account();
+        leaderboard = new Leaderboard();
 
         view.setAddChangeListener(new jTabListener());
         view.setLoginButtonListener(new loginButtonListener());
@@ -45,8 +47,7 @@ public class User {
             ArrayList<String> arrayList;
 
             // TODO CHANGE THIS
-            String cmd = "SELECT * FROM users";
-            arrayList = client.searchData(cmd);
+            arrayList = leaderboard.searchData();
             view.model.clear();
             for (String s : arrayList) {
                 // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)

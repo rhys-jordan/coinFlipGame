@@ -25,28 +25,4 @@ public class Client {
             ex.printStackTrace();
         }
     }
-
-    // need to implement updates and checks
-    public ArrayList<String> searchData(String cmd) {
-        ArrayList<String> arrayList = new ArrayList<String>();
-
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
-            ResultSet rs = conn.createStatement().executeQuery(cmd);
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String username = rs.getString("username");
-                String password = rs.getString("password");
-                int balance = rs.getInt("balance");
-                boolean loggedIn = rs.getBoolean("loggedIn");
-                String s = String.format("%3d %15s %15s %3d %3b",id,username,password,balance,loggedIn);
-                arrayList.add(s);
-            }
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-        return arrayList;
-    }
 }
