@@ -24,12 +24,12 @@ public class User {
         view.setAddChangeListener(new jTabListener());
         view.setLoginButtonListener(new loginButtonListener());
         view.setFlipButtonListener(new flipButtonListener());
+        view.setRollDiceButtonListener(new rollDiceButtonListener());
         view.setCreateAccountButtonListener(new createAccountButtonActionListener());
     }
 
     public String flipCoin() {
         Random rand = new Random();
-
         int outcome = rand.nextInt(2);
 
         if(outcome == 1) {
@@ -37,6 +37,33 @@ public class User {
         }
         else{
             return "TAILS";
+        }
+    }
+
+    public  String rollDice() {
+        Random rand = new Random();
+        int outcome = rand.nextInt(6);
+        if (outcome == 0) {
+            return "ONE";
+        }
+        else if (outcome == 1) {
+            return "TWO";
+        }
+        else if (outcome == 2) {
+            return "THREE";
+        }
+        else if (outcome == 3) {
+            return "FOUR";
+        }
+        else if (outcome == 4) {
+            return "FIVE";
+        }
+        else if (outcome == 5) {
+            return "SIX";
+        }
+        else {
+            System.out.println("ERROR: couldnt flip coin");
+            return null;
         }
     }
 
@@ -166,6 +193,61 @@ public class User {
             else{
                 JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
             }
+        }
+    }
+
+    //DICE GAME LOGIC
+    class rollDiceButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String diceBetAmount = view.getDiceBetAmount();
+            Double accountBalance = account.getAccountBalance();
+
+            try {
+                double bet = Double.parseDouble(diceBetAmount);
+                if(bet != (int)bet) {
+                    JOptionPane.showMessageDialog(view.jTabs, "please enter integer input or make sure input is an integer!");
+                    return;
+                }
+                else if (bet > accountBalance) {
+                    JOptionPane.showMessageDialog(view.jTabs, "you cannot bet more than you have in your account");
+                    return;
+                }
+            } catch (NumberFormatException ex){
+                JOptionPane.showMessageDialog(view.jTabs, "please enter valid input for bet. must be a number");
+                return;
+            }
+            String betOption = view.getDiceOption();
+            String outcome = rollDice();
+            //System.out.println("bet = " + betOption + " outcome = " + outcome);
+
+            if (outcome == null) {
+                System.out.println("ERROR ROLLING DIE");
+            }
+
+            if(Objects.equals(outcome, betOption)) {
+                double bet = 3*(Double.parseDouble(diceBetAmount));
+                String sendOutcome = "Result = " + outcome + ", you win " + (int)bet + " dollars!";
+                view.setDiceResultTextField(sendOutcome);
+                double currentBalance = account.getAccountBalance();
+                account.addBalance(bet, currentBalance);
+                currentBalance = account.getAccountBalance();
+                view.setDiceBalanceTextField(currentBalance);
+            }
+            else {
+                String sendOutcome = "Result = " + outcome + ", you lost " + diceBetAmount + " dollars :(";
+                view.setDiceResultTextField(sendOutcome);
+                double bet = Double.parseDouble(diceBetAmount);
+                double currentBalance = account.getAccountBalance();
+                account.removeBalance(bet, currentBalance);
+                currentBalance = account.getAccountBalance();
+                view.setDiceBalanceTextField(currentBalance);
+            }
+
+
+
+            //System.out.println("bet = " + betOption);
+
         }
     }
 }

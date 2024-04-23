@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 
 public class View {
 
@@ -315,5 +316,25 @@ public class View {
 
     public void setCurrentBalanceTextField(Double bal) {
         currentBalanceTextField.setText(String.valueOf(bal));
+    }
+
+    public String getDiceBetAmount() {
+        return diceBetTextField.getText();
+    }
+
+    public void setDiceResultTextField(String outcome) {
+        diceResultTextField.setText(outcome);
+    }
+
+    public void setDiceBalanceTextField(Double bal) {
+        diceBalanceTextField.setText(String.valueOf(bal));
+    }
+
+    void setRollDiceButtonListener(ActionListener aL) {
+        rollButton.addActionListener(aL);
+    }
+
+    public String getDiceOption() {
+        return (String) diceBox.getSelectedItem();
     }
 }

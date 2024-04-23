@@ -4,7 +4,7 @@ public class Main {
     }
 }
 
-//JACOB TODO
-    // new gui tab for dice
-    // listeners and other dice logic
+//TODO
+    // finish leaderboard
+    // threaded server x _ x
 
