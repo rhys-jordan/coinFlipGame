@@ -142,10 +142,10 @@ public class User {
         public void actionPerformed(ActionEvent e) {
             String username = view.getUsername();
             String password = view.getPassword();
-            int validAccount = account.verifyAccount(username);
+            int validAccount = account.verifyAccount(username, password);
 
             if(account.getLoggedIn()) {
-                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
+                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in, exit game to logout");
             }
             else if(validAccount == 1){
                 account.login(password);
