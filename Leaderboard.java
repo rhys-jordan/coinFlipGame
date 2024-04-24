@@ -3,27 +3,32 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class Leaderboard extends Server{
 
 
-    public ArrayList<String> searchData() {
+    public ArrayList<String> getTopThree() {
+        //LinkedHashMap<String, Integer> topThree = new LinkedHashMap<String, Integer>();
         ArrayList<String> arrayList = new ArrayList<String>();
+        ArrayList<Integer> balances = new ArrayList<Integer>();
 
         try {
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:userDatabase.db");
-            String cmd = "SELECT * FROM users " +
+            Connection conn = DriverManager.getConnection(uri);
+            String cmd = "SELECT users.username, users.balance FROM users " +
                     "ORDER BY users.balance DESC " +
                     "LIMIT 3;";
             ResultSet rs = conn.createStatement().executeQuery(cmd);
             while (rs.next()) {
-                int id = rs.getInt("id");
+                //int id = rs.getInt("id");
                 String username = rs.getString("username");
-                String password = rs.getString("password");
+                //String password = rs.getString("password");
                 int balance = rs.getInt("balance");
-                boolean loggedIn = rs.getBoolean("loggedIn");
-                String s = String.format("%3d %15s %15s %3d %3b",id,username,password,balance,loggedIn);
-                arrayList.add(s);
+                //boolean loggedIn = rs.getBoolean("loggedIn");
+                String leader = String.format("%60s  %50d ", username,balance);
+                System.out.println(leader);
+                //arrayList.add(s);
+                arrayList.add(leader);
             }
             conn.close();
         } catch (SQLException ex) {
