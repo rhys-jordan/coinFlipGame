@@ -4,6 +4,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Random;
 
@@ -74,8 +75,9 @@ public class User {
             ArrayList<String> arrayList;
 
             // TODO CHANGE THIS
-            arrayList = leaderboard.searchData();
+            arrayList = leaderboard.getTopThree();
             view.model.clear();
+
             for (String s : arrayList) {
                 // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)
                 // should reformat cmd to only get relevant information. i.e. only display username and balance (definitely wouldn't want to display password)
