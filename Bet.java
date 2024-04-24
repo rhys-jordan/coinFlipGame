@@ -4,8 +4,6 @@ import java.util.Random;
 public class Bet extends Server{
 
 
-
-
     public String flipCoin() {
         Random rand = new Random();
         int outcome = rand.nextInt(2);
@@ -40,7 +38,7 @@ public class Bet extends Server{
             return "SIX";
         }
         else {
-            System.out.println("ERROR: couldnt flip coin");
+            System.out.println("ERROR: couldn't flip coin");
             return null;
         }
     }

@@ -171,12 +171,13 @@ public class User {
         public void actionPerformed(ActionEvent e) {
             String username = view.getUsername();
             String password = view.getPassword();
-            int validAccount = account.verifyAccount(username, password);
+            int validAccount = account.verifyAccount(username);
 
             if(account.getLoggedIn()) {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in, exit game to logout");
             }
             else if(validAccount == 1){
+                System.out.println("Valid accounts");
                 int loggedin = account.login(password);
                 if(loggedin == -1){
                     JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password field");
