@@ -17,7 +17,7 @@ public class Account extends Server{
         if(username.isEmpty() || password.isEmpty()){
             return -1;
         }
-        else if(verifyAccount(username) == 1){
+        else if(verifyAccount(username, password) == 1){
             return 0;
         }
         else{
@@ -49,8 +49,8 @@ public class Account extends Server{
         }
     }
 
-    public int verifyAccount(String username){
-        if(username.isEmpty()){
+    public int verifyAccount(String username, String password){
+        if(username.isEmpty() || password.isEmpty()){
             return -1;
         }
         else {
@@ -58,9 +58,10 @@ public class Account extends Server{
                 connection = DriverManager.getConnection(uri);
                 String exist = "SELECT COUNT(id) " +
                         "FROM users " +
-                        "WHERE users.username = ?;" ;
+                        "WHERE users.username = ? AND users.password = ?;" ;
                 PreparedStatement prepStmt = connection.prepareStatement(exist);
                 prepStmt.setString(1, username);
+                prepStmt.setString(2,password);
                 ResultSet results = prepStmt.executeQuery();
                 if (results.next()) {
                     int count = results.getInt(1);
