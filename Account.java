@@ -85,9 +85,9 @@ public class Account extends Server{
         }
     }
 
-    public void login(String password){
-        if(password.isEmpty() || username.isEmpty()){
-            System.out.println("Please enter something in username field");
+    public int login(String password){
+        if(password.isEmpty()){
+            return -1;
         }
         else{
             try {
@@ -106,9 +106,9 @@ public class Account extends Server{
 
                 if (results.next()) {
                     int id = results.getInt("id");
-                    System.out.println("COunt " + id);
                     //this.password = password;
                     this.loggedIn = true;
+                    return 1;
                     /*
                     String cmd = "UPDATE users" +
                             "SET users.loggedIn = ?" +
@@ -134,6 +134,7 @@ public class Account extends Server{
 
             }
         }
+        return 0;
     }
 
     public double getAccountBalance() {

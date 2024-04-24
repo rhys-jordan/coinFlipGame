@@ -150,14 +150,23 @@ public class User {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
             else if(validAccount == 1){
-                account.login(password);
-                JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
+                int loggedin = account.login(password);
+                if(loggedin == -1){
+                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password field");
+                }
+                else if(loggedin == 1){
+                    JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
+                }
+                else{
+                    JOptionPane.showMessageDialog(view.jTabs, "Password incorrect, please try again");
+                }
+
             }
             else if (validAccount == -1){
                 JOptionPane.showMessageDialog(view.jTabs, "Please enter something in username field");
             }
             else{
-                JOptionPane.showMessageDialog(view.jTabs, "Username or password incorrect, please try again or create an account");
+                JOptionPane.showMessageDialog(view.jTabs, "Username does not exist, please try again or create an account");
             }
 
                 // upon exit need to set boolean in database to false
@@ -180,20 +189,22 @@ public class User {
             String username = view.getUsername();
             String password = view.getPassword();
 
-            int validAccountCreated =  account.createAccount(username, password);
-            //JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
+            if(account.getLoggedIn()) {
+                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
+            }
+            else {
+                int validAccountCreated = account.createAccount(username, password);
+                //JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
 
-            if(validAccountCreated == 1){
-                JOptionPane.showMessageDialog(view.jTabs, "Account Created");
-            }
-            else if (validAccountCreated == -1){
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
-            }
-            else if (validAccountCreated == 0){
-                JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
-            }
-            else{
-                JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
+                if (validAccountCreated == 1) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Account Created");
+                } else if (validAccountCreated == -1) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
+                } else if (validAccountCreated == 0) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
+                } else {
+                    JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
+                }
             }
         }
     }
