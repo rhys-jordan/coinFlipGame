@@ -9,6 +9,9 @@ public class Account extends Server{
     public boolean getLoggedIn() {
         return loggedIn;
     }
+    public String getUsername(){
+        return username;
+    }
 
     public int createAccount(String username, String password){
         if(username.isEmpty() || password.isEmpty()){

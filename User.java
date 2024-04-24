@@ -14,6 +14,8 @@ public class User {
     private Client client;
     private Account account;
     private Leaderboard leaderboard;
+    private Bet bet;
+    private Outcome outcome;
     private boolean tabsMade = false;
 
     public User() {
@@ -21,6 +23,8 @@ public class User {
         client = new Client();
         account = new Account();
         leaderboard = new Leaderboard();
+        bet = new Bet();
+        outcome = new Outcome();
 
         view.setAddChangeListener(new jTabListener());
         view.setLoginButtonListener(new loginButtonListener());
@@ -115,8 +119,29 @@ public class User {
             }
 
             // then send betType into server/db for game logic
-            String outcome = flipCoin();
+            String betOutcome = bet.flipCoin();
+            int results = outcome.getResults(betType, betOutcome);
+            double currentBalance = account.getAccountBalance();
+            double bet = Double.parseDouble(betAmount);
+            String username = account.getUsername();
+            String sendOutcome;
+            if(results == 1){
+                sendOutcome = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
 
+            }
+            else if(results == 0){
+                bet = bet *-1;
+                sendOutcome = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+            }
+            else{
+                sendOutcome = "ERROR Flipping coin";
+            }
+            view.setResultTextField(sendOutcome);
+            outcome.updateBalance(bet, currentBalance, username);
+            currentBalance = account.getAccountBalance();
+            view.setCurrentBalanceTextField(currentBalance);
+
+            /*
             if(Objects.equals(outcome, betType)) {
                 String sendOutcome = "Result = " + outcome + ", you win " + betAmount + " dollars!";
                 view.setResultTextField(sendOutcome);
@@ -135,6 +160,8 @@ public class User {
                 currentBalance = account.getAccountBalance();
                 view.setCurrentBalanceTextField(currentBalance);
             }
+
+             */
         }
     }
 
@@ -231,9 +258,10 @@ public class User {
                 return;
             }
             String betOption = view.getDiceOption();
-            String outcome = rollDice();
-            //System.out.println("bet = " + betOption + " outcome = " + outcome);
+            String outcome = bet.rollDice();
 
+            //System.out.println("bet = " + betOption + " outcome = " + outcome);
+            /*
             if (outcome == null) {
                 System.out.println("ERROR ROLLING DIE");
             }
@@ -256,6 +284,8 @@ public class User {
                 currentBalance = account.getAccountBalance();
                 view.setDiceBalanceTextField(currentBalance);
             }
+
+             */
 
 
 
