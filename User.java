@@ -137,8 +137,9 @@ public class User {
                 sendOutcome = "ERROR Flipping coin";
             }
             view.setResultTextField(sendOutcome);
-            outcome.updateBalance(bet, currentBalance, username);
-            currentBalance = account.getAccountBalance();
+            currentBalance = outcome.updateBalance(bet, currentBalance, username);
+            //currentBalance = account.getAccountBalance();
+            account.setLocalBalance(currentBalance);
             view.setCurrentBalanceTextField(currentBalance);
 
             /*
@@ -177,7 +178,6 @@ public class User {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in, exit game to logout");
             }
             else if(validAccount == 1){
-                System.out.println("Valid accounts");
                 int loggedin = account.login(password);
                 if(loggedin == -1){
                     JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password field");
@@ -279,8 +279,9 @@ public class User {
                 sendOutcome = "ERROR Flipping coin";
             }
             view.setDiceResultTextField(sendOutcome);
-            outcome.updateBalance(bet, currentBalance, username);
-            currentBalance = account.getAccountBalance();
+            currentBalance = outcome.updateBalance(bet, currentBalance, username);
+            //currentBalance = account.getAccountBalance();
+            account.setLocalBalance(currentBalance);
             view.setDiceBalanceTextField(currentBalance);
 
             //System.out.println("bet = " + betOption + " outcome = " + outcome);

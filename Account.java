@@ -13,6 +13,10 @@ public class Account extends Server{
         return username;
     }
 
+    public void setLocalBalance(double balance){
+        localBalance = balance;
+    }
+
     public int createAccount(String username, String password){
         if(username.isEmpty() || password.isEmpty()){
             return -1;

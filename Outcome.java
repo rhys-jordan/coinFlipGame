@@ -20,7 +20,7 @@ public class Outcome extends Server{
         }
     }
 
-    public void updateBalance(double bet, double currentBalance, String username){
+    public double updateBalance(double bet, double currentBalance, String username){
         double newBalance = currentBalance + bet;
 
         try {
@@ -48,6 +48,7 @@ public class Outcome extends Server{
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            return newBalance;
 
         }
     }
