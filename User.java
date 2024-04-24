@@ -240,11 +240,11 @@ public class User {
     class rollDiceButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String diceBetAmount = view.getDiceBetAmount();
+            String betAmount = view.getDiceBetAmount();
             Double accountBalance = account.getAccountBalance();
 
             try {
-                double bet = Double.parseDouble(diceBetAmount);
+                double bet = Double.parseDouble(betAmount);
                 if(bet != (int)bet) {
                     JOptionPane.showMessageDialog(view.jTabs, "please enter integer input or make sure input is an integer!");
                     return;
@@ -257,8 +257,30 @@ public class User {
                 JOptionPane.showMessageDialog(view.jTabs, "please enter valid input for bet. must be a number");
                 return;
             }
-            String betOption = view.getDiceOption();
-            String outcome = bet.rollDice();
+            String betType = view.getDiceOption();
+            String betOutcome = bet.rollDice();
+            int results = outcome.getResults(betType, betOutcome);
+
+            double currentBalance = account.getAccountBalance();
+            double bet = Double.parseDouble(betAmount);
+            String username = account.getUsername();
+            String sendOutcome;
+            if(results == 1){
+                bet = 3*bet;
+                sendOutcome = "Result = " + betOutcome + ", you win " + bet + " dollars!";
+
+            }
+            else if(results == 0){
+                bet = bet *-1;
+                sendOutcome = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+            }
+            else{
+                sendOutcome = "ERROR Flipping coin";
+            }
+            view.setDiceResultTextField(sendOutcome);
+            outcome.updateBalance(bet, currentBalance, username);
+            currentBalance = account.getAccountBalance();
+            view.setDiceBalanceTextField(currentBalance);
 
             //System.out.println("bet = " + betOption + " outcome = " + outcome);
             /*
