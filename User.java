@@ -14,6 +14,8 @@ public class User {
     private Client client;
     private Account account;
     private Leaderboard leaderboard;
+    private Bet bet;
+    private Outcome outcome;
     private boolean tabsMade = false;
 
     public User() {
@@ -21,6 +23,8 @@ public class User {
         client = new Client();
         account = new Account();
         leaderboard = new Leaderboard();
+        bet = new Bet();
+        outcome = new Outcome();
 
         view.setAddChangeListener(new jTabListener());
         view.setLoginButtonListener(new loginButtonListener());
@@ -115,8 +119,29 @@ public class User {
             }
 
             // then send betType into server/db for game logic
-            String outcome = flipCoin();
+            String betOutcome = bet.flipCoin();
+            int results = outcome.getResults(betType, betOutcome);
+            double currentBalance = account.getAccountBalance();
+            double bet = Double.parseDouble(betAmount);
+            String username = account.getUsername();
+            String sendOutcome;
+            if(results == 1){
+                sendOutcome = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
 
+            }
+            else if(results == 0){
+                bet = bet *-1;
+                sendOutcome = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+            }
+            else{
+                sendOutcome = "ERROR Flipping coin";
+            }
+            view.setResultTextField(sendOutcome);
+            outcome.updateBalance(bet, currentBalance, username);
+            currentBalance = account.getAccountBalance();
+            view.setCurrentBalanceTextField(currentBalance);
+
+            /*
             if(Objects.equals(outcome, betType)) {
                 String sendOutcome = "Result = " + outcome + ", you win " + betAmount + " dollars!";
                 view.setResultTextField(sendOutcome);
@@ -135,6 +160,8 @@ public class User {
                 currentBalance = account.getAccountBalance();
                 view.setCurrentBalanceTextField(currentBalance);
             }
+
+             */
         }
     }
 
@@ -150,14 +177,23 @@ public class User {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in, exit game to logout");
             }
             else if(validAccount == 1){
-                account.login(password);
-                JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
+                int loggedin = account.login(password);
+                if(loggedin == -1){
+                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password field");
+                }
+                else if(loggedin == 1){
+                    JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
+                }
+                else{
+                    JOptionPane.showMessageDialog(view.jTabs, "Password incorrect, please try again");
+                }
+
             }
             else if (validAccount == -1){
                 JOptionPane.showMessageDialog(view.jTabs, "Please enter something in username field");
             }
             else{
-                JOptionPane.showMessageDialog(view.jTabs, "Username or password incorrect, please try again or create an account");
+                JOptionPane.showMessageDialog(view.jTabs, "Username does not exist, please try again or create an account");
             }
 
                 // upon exit need to set boolean in database to false
@@ -180,20 +216,22 @@ public class User {
             String username = view.getUsername();
             String password = view.getPassword();
 
-            int validAccountCreated =  account.createAccount(username, password);
-            //JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
+            if(account.getLoggedIn()) {
+                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
+            }
+            else {
+                int validAccountCreated = account.createAccount(username, password);
+                //JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
 
-            if(validAccountCreated == 1){
-                JOptionPane.showMessageDialog(view.jTabs, "Account Created");
-            }
-            else if (validAccountCreated == -1){
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
-            }
-            else if (validAccountCreated == 0){
-                JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
-            }
-            else{
-                JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
+                if (validAccountCreated == 1) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Account Created");
+                } else if (validAccountCreated == -1) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
+                } else if (validAccountCreated == 0) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
+                } else {
+                    JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
+                }
             }
         }
     }
@@ -220,9 +258,10 @@ public class User {
                 return;
             }
             String betOption = view.getDiceOption();
-            String outcome = rollDice();
-            //System.out.println("bet = " + betOption + " outcome = " + outcome);
+            String outcome = bet.rollDice();
 
+            //System.out.println("bet = " + betOption + " outcome = " + outcome);
+            /*
             if (outcome == null) {
                 System.out.println("ERROR ROLLING DIE");
             }
@@ -245,6 +284,8 @@ public class User {
                 currentBalance = account.getAccountBalance();
                 view.setDiceBalanceTextField(currentBalance);
             }
+
+             */
 
 
 
