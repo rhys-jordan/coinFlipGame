@@ -133,6 +133,9 @@ public class Server {
                     String username = account.getUsername();
                     String clientMsg;
                     if(results != -1){
+                        if(results == 0){
+                            betAmount = -1*betAmount;
+                        }
                         currentBalance = outcome.updateBalance(betAmount, currentBalance, username);
                         account.setLocalBalance(currentBalance);
                         clientMsg = String.format("%d %s %g ", results, betOutcome, currentBalance);
@@ -145,6 +148,38 @@ public class Server {
                     sendToClient("-1");
                 }
             }
+        }
+        else if (splitMsg[0].equals("rollDice")) {
+            processRollDice(splitMsg[1],splitMsg[2]);
+        }
+    }
+
+
+    public void processRollDice(String betAmount, String betType){
+        try {
+            double bet = Double.parseDouble(betAmount);
+            String betOutcome = game.rollDice();
+            int results = outcome.getResults(betType, betOutcome);
+            double currentBalance = account.getAccountBalance();
+            String username = account.getUsername();
+            String clientMsg;
+            if(results != -1){
+                if(results == 0){
+                    bet = -1*bet;
+                }
+                else if(results == 1){
+                    bet = 3*bet;
+                }
+                currentBalance = outcome.updateBalance(bet, currentBalance, username);
+                account.setLocalBalance(currentBalance);
+                clientMsg = String.format("%d %s %g ", results, betOutcome, currentBalance);
+                sendToClient(clientMsg);
+            }
+            else{
+                System.out.println("Error");
+            }
+        }catch(NumberFormatException ex){
+            sendToClient("-1");
         }
     }
 }

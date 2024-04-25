@@ -208,7 +208,6 @@ public class User{
                 String servermsg = String.format("createAccount %s %s ", username, password);
 
                 client.sendToServer(servermsg);
-                System.out.println("Sent");
                 String validAccountCreated = client.getFromServer();
                 System.out.println(validAccountCreated);
                 if (validAccountCreated.equals("1")) {
@@ -229,8 +228,35 @@ public class User{
         @Override
         public void actionPerformed(ActionEvent e) {
             String betAmount = view.getDiceBetAmount();
-            Double accountBalance = account.getAccountBalance();
+            //Double accountBalance = account.getAccountBalance();
+            String betType = view.getDiceOption();
 
+            String servermsg = String.format("rollDice %s %s ", betAmount, betType);
+
+            client.sendToServer(servermsg);
+
+            String diceRolled = client.getFromServer();
+            String[] serverResults = diceRolled.split(" ");
+            String results = serverResults[0];
+            String betOutcome = serverResults[1];
+            String currentBalance = serverResults[2];
+            System.out.println(diceRolled);
+            String resultingString;
+            if(results.equals("1")){
+                resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
+            }
+            else if(results.equals("0")){
+                resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+            }
+            else{
+                resultingString = "ERROR Flipping coin";
+            }
+            view.setDiceResultTextField(resultingString);
+            view.setDiceBalanceTextField(Double.valueOf(currentBalance));
+
+
+
+            /*
             try {
                 double bet = Double.parseDouble(betAmount);
                 if(bet != (int)bet) {
