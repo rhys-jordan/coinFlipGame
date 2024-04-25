@@ -1,11 +1,94 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+    private static Socket conn;
+    private static ServerSocket server;
+    protected Connection connection = null;
+    protected String uri = "jdbc:sqlite:userDatabase.db";
+
+
+    public static void main(String [] args) {
+        try{
+            Server s = new Server();
+            server = new ServerSocket(5000);
+            while(true){
+                System.out.println("waiting for client to connect..");
+                conn = server.accept();
+                System.out.println("connected to client " + conn);
+                s.readClient();
+            }
+
+        } catch (IOException e) {
+            try {
+                server.close();
+            }catch (IOException ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    //reads information from client sends to method to be processed then sent to another method to be sent back to client
+    public void readClient(){
+        try {
+            while(true){
+                BufferedReader clientMessage = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                System.out.println("waiting for client to send data");
+                String msg = clientMessage.readLine();
+                System.out.println(msg);
+                System.out.println("received: " + msg);
+                //sendToClient("Got message");
+                /*
+                System.out.println("received: " + msg);
+                String output = processesInput(msg);
+                sendToClient(output);
+
+                 */
+            }
+
+        }catch (IOException e){
+            try {
+                conn.close();
+            }catch (IOException ex){
+                System.out.println("Could not close server");
+            }
+        }
+    }
+
+
+
+    //Sends info back to client
+    public void sendToClient(String response){
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(conn.getOutputStream());
+            writer.println(response);
+            writer.flush();
+
+        } catch (IOException e) {
+            System.out.println("Error with client ");
+        }
+    }
+}
+
+
+/*
 public class Server {
     protected Connection connection = null;
     protected String uri = "jdbc:sqlite:userDatabase.db";
+    private static Socket conn;
+    private static ServerSocket serverSocket;
 
 
     public static void main(String[] args) {
@@ -15,11 +98,15 @@ public class Server {
     public void startServer() {
         try {
             System.out.println("server> waiting for client to connect");
-            ServerSocket serverSocket = new ServerSocket(5000);
+            serverSocket = new ServerSocket(5000);
             while (true) {
-                Socket conn = serverSocket.accept();
+                System.out.println("waiting for client to connect..");
+                conn = serverSocket.accept();
                 System.out.println("server> connected to Socket: " + conn);
+                readClient();
                 // another try catch to connect to db
+
+                /*
                 try {
                     connection = DriverManager.getConnection(uri);
                     System.out.println("server> success connecting to database");
@@ -34,13 +121,40 @@ public class Server {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
+
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            try {
+                conn.close();
+            }catch (IOException exp){
+                System.out.println("Could not close server");
+            }
         }
     }
 
-    /*
+    public void readClient(){
+        try {
+            while(true){
+                BufferedReader clientMessage = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                System.out.println("waiting for client to send data");
+                String msg = clientMessage.readLine();
+                System.out.println(msg);
+
+                //.out.println("received: " + msg);
+                //String output = processesInput(msg);
+                //sendToClient(output);
+            }
+
+        }catch (IOException e){
+            try {
+                conn.close();
+            }catch (IOException ex){
+                System.out.println("Could not close server");
+            }
+        }
+    }
+
+
 
     public void createUser(String username, String password){
         try{
@@ -61,5 +175,7 @@ public class Server {
             ex.printStackTrace();
         }
     }
-     */
+
 }
+
+*/

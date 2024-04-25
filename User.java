@@ -3,12 +3,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Random;
 
-public class User {
+public class User{
 
     private View view;
     private Client client;
@@ -138,7 +141,6 @@ public class User {
             }
             view.setResultTextField(sendOutcome);
             currentBalance = outcome.updateBalance(bet, currentBalance, username);
-            //currentBalance = account.getAccountBalance();
             account.setLocalBalance(currentBalance);
             view.setCurrentBalanceTextField(currentBalance);
 
@@ -172,6 +174,18 @@ public class User {
         public void actionPerformed(ActionEvent e) {
             String username = view.getUsername();
             String password = view.getPassword();
+            System.out.println("LOGIN BUTTON HIT");
+
+            client.sendToServer(username);
+            System.out.println("Sent");
+            //String output = client.getFromServer();
+
+            //System.out.println(output);
+
+
+
+
+            /*
             int validAccount = account.verifyAccount(username);
 
             if(account.getLoggedIn()) {
@@ -208,6 +222,8 @@ public class User {
             if(tabsMade) {
                 // idk why this if check is here can prolly delete it
             }
+
+             */
         }
     }
 
@@ -280,7 +296,6 @@ public class User {
             }
             view.setDiceResultTextField(sendOutcome);
             currentBalance = outcome.updateBalance(bet, currentBalance, username);
-            //currentBalance = account.getAccountBalance();
             account.setLocalBalance(currentBalance);
             view.setDiceBalanceTextField(currentBalance);
 
