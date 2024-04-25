@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
     private static Socket conn;
@@ -21,6 +22,7 @@ public class Server {
     Account account;
     PlayGame game;
     Outcome outcome;
+    Leaderboard leaderboard;
 
 
     public static void main(String [] args) {
@@ -47,6 +49,7 @@ public class Server {
         account = new Account();
         game = new PlayGame();
         outcome = new Outcome();
+        leaderboard = new Leaderboard();
     }
 
     //reads information from client sends to method to be processed then sent to another method to be sent back to client
@@ -88,7 +91,12 @@ public class Server {
         System.out.println(splitMsg[0]);
 
         if(splitMsg.length < 3){
-            sendToClient("-1");
+            if(splitMsg[0].equals("leaderboard")){
+                processLeaderboard();
+            }
+            else{
+                sendToClient("-1");
+            }
         }else{
             if (splitMsg[0].equals("login")) {
                 processLogin(splitMsg[1], splitMsg[2]);
@@ -166,5 +174,24 @@ public class Server {
         }catch(NumberFormatException ex){
             sendToClient("-1");
         }
+    }
+
+    public void processLeaderboard(){
+        System.out.println("display leaderboard");
+        String leaders;
+        leaders = leaderboard.getTopThree();
+        /*
+        for (String s : arrayList) {
+            // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)
+            // should reformat cmd to only get relevant information. i.e. only display username and balance (definitely wouldn't want to display password)
+            System.out.println(s);
+        }
+
+         */
+
+        //String output = arrayList.toString();
+        System.out.println(leaders);
+        sendToClient(leaders);
+
     }
 }

@@ -43,15 +43,26 @@ public class User{
             // check if logged in?
             ArrayList<String> arrayList;
 
-            // TODO CHANGE THIS
-            arrayList = leaderboard.getTopThree();
-            view.model.clear();
+            String servermsg = String.format("leaderboard ");
+            client.sendToServer(servermsg);
+            String leaders = client.getFromServer();
+            System.out.println(leaders);
+            String[] leaderList = leaders.split(" ");
+            //TO DO Display leaderboard
 
+
+
+            // TODO CHANGE THIS
+            //arrayList = leaderboard.getTopThree();
+            //view.model.clear();
+            /*
             for (String s : arrayList) {
                 // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)
                 // should reformat cmd to only get relevant information. i.e. only display username and balance (definitely wouldn't want to display password)
                 view.model.addElement(s);
             }
+
+             */
         }
     }
 
@@ -61,28 +72,31 @@ public class User{
         public void actionPerformed(ActionEvent e) {
             String betAmount = view.getBetAmount();
             String betType = view.getBetType();
+
             String servermsg = String.format("flipCoin %s %s ", betAmount, betType);
 
             client.sendToServer(servermsg);
             String coinfliped = client.getFromServer();
             String[] serverResults = coinfliped.split(" ");
-            String results = serverResults[0];
-            String betOutcome = serverResults[1];
-            String currentBalance = serverResults[2];
-            System.out.println(coinfliped);
-            String resultingString;
-            if(results.equals("1")){
-                resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
+            if(serverResults.length < 3){
+                System.out.println("Error");
             }
-            else if(results.equals("0")){
-                resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+            else {
+                String results = serverResults[0];
+                String betOutcome = serverResults[1];
+                String currentBalance = serverResults[2];
+                System.out.println(coinfliped);
+                String resultingString;
+                if (results.equals("1")) {
+                    resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
+                } else if (results.equals("0")) {
+                    resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+                } else {
+                    resultingString = "ERROR Flipping coin";
+                }
+                view.setResultTextField(resultingString);
+                view.setCurrentBalanceTextField(Double.valueOf(currentBalance));
             }
-            else{
-                resultingString = "ERROR Flipping coin";
-            }
-            view.setResultTextField(resultingString);
-            view.setCurrentBalanceTextField(Double.valueOf(currentBalance));
-
 
 
             /*
@@ -228,7 +242,6 @@ public class User{
         @Override
         public void actionPerformed(ActionEvent e) {
             String betAmount = view.getDiceBetAmount();
-            //Double accountBalance = account.getAccountBalance();
             String betType = view.getDiceOption();
 
             String servermsg = String.format("rollDice %s %s ", betAmount, betType);
@@ -243,6 +256,7 @@ public class User{
             System.out.println(diceRolled);
             String resultingString;
             if(results.equals("1")){
+                //betAmount = 3*betAmount;
                 resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
             }
             else if(results.equals("0")){
