@@ -19,6 +19,8 @@ public class Server {
     protected Connection connection = null;
     protected String uri = "jdbc:sqlite:userDatabase.db";
     Account account;
+    PlayGame game;
+    Outcome outcome;
 
 
     public static void main(String [] args) {
@@ -43,6 +45,8 @@ public class Server {
 
     public Server(){
         account = new Account();
+        game = new PlayGame();
+        outcome = new Outcome();
     }
 
     //reads information from client sends to method to be processed then sent to another method to be sent back to client
@@ -96,9 +100,9 @@ public class Server {
                 sendToClient("-1");
             }
             else{
-                System.out.println(splitMsg[1]);
-                System.out.println(splitMsg[2]);
-                int loggedin = account.login(splitMsg[1], splitMsg[2]);
+                String username = splitMsg[1];
+                String password = splitMsg[2];
+                int loggedin = account.login(username, password);
                 System.out.println(loggedin);
                 sendToClient(Integer.toString(loggedin));
             }
@@ -108,13 +112,39 @@ public class Server {
                 sendToClient("-1");
             }
             else{
-                System.out.println(splitMsg[1]);
-                System.out.println(splitMsg[2]);
-                int accountCreated = account.createAccount(splitMsg[1], splitMsg[2]);
+                String username = splitMsg[1];
+                String password = splitMsg[2];
+                int accountCreated = account.createAccount(username, password);
                 System.out.println(accountCreated);
                 sendToClient(Integer.toString(accountCreated));
             }
-
+        }
+        else if (splitMsg[0].equals("flipCoin")){
+            if(splitMsg.length < 3){
+                sendToClient("-1");
+            }
+            else{
+                try {
+                    double betAmount = Double.parseDouble(splitMsg[1]);
+                    String betType = splitMsg[2];
+                    String betOutcome = game.flipCoin();
+                    int results = outcome.getResults(betType, betOutcome);
+                    double currentBalance = account.getAccountBalance();
+                    String username = account.getUsername();
+                    String clientMsg;
+                    if(results != -1){
+                        currentBalance = outcome.updateBalance(betAmount, currentBalance, username);
+                        account.setLocalBalance(currentBalance);
+                        clientMsg = String.format("%d %s %g ", results, betOutcome, currentBalance);
+                        sendToClient(clientMsg);
+                    }
+                    else{
+                        System.out.println("Error");
+                    }
+                }catch(NumberFormatException ex){
+                    sendToClient("-1");
+                }
+            }
         }
     }
 }
