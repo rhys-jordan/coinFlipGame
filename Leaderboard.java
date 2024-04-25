@@ -29,16 +29,23 @@ public class Leaderboard{
                 int balance = rs.getInt("balance");
                 //boolean loggedIn = rs.getBoolean("loggedIn");
                 //String leader = String.format("%s  %d ", username,balance);
-                leader = leader.concat(String.format("%s  %d ", username,balance));
+                leader = leader.concat(String.format("%s %d ", username,balance));
                 //System.out.println(leader);
                 //arrayList.add(s);
                 //arrayList.add(leader);
             }
-            conn.close();
+            return leader;
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
-
-        return leader;
+        return null;
     }
 }

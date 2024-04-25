@@ -15,19 +15,11 @@ public class User{
 
     private View view;
     private Client client;
-    private Account account;
-    private Leaderboard leaderboard;
-    private Bet bet;
-    private Outcome outcome;
     private boolean tabsMade = false;
 
     public User() {
         view = new View();
         client = new Client();
-        //account = new Account();
-        leaderboard = new Leaderboard();
-        bet = new Bet();
-        outcome = new Outcome();
 
         view.setAddChangeListener(new jTabListener());
         view.setLoginButtonListener(new loginButtonListener());
@@ -42,27 +34,25 @@ public class User{
         public void stateChanged(ChangeEvent e) {
             // check if logged in?
             ArrayList<String> arrayList;
+            view.model.clear();
 
             String servermsg = String.format("leaderboard ");
             client.sendToServer(servermsg);
             String leaders = client.getFromServer();
             System.out.println(leaders);
             String[] leaderList = leaders.split(" ");
-            //TO DO Display leaderboard
+            String header = String.format("%s %25s %14s ","Rank", "Username", "Balance");
+            String first = String.format("1 %30s %20s ", leaderList[0], leaderList[1]);
+            String second = String.format("2 %30s %20s ", leaderList[2], leaderList[3]);
+            String third = String.format("3 %30s %20s ", leaderList[4], leaderList[5]);
+            view.model.addElement(header);
+            view.model.addElement("-----------------------------------------------------------------------------------");
+            view.model.addElement(first);
+            view.model.addElement(second);
+            view.model.addElement(third);
 
 
 
-            // TODO CHANGE THIS
-            //arrayList = leaderboard.getTopThree();
-            //view.model.clear();
-            /*
-            for (String s : arrayList) {
-                // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)
-                // should reformat cmd to only get relevant information. i.e. only display username and balance (definitely wouldn't want to display password)
-                view.model.addElement(s);
-            }
-
-             */
         }
     }
 

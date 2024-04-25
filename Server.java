@@ -191,7 +191,8 @@ public class Server {
 
         //String output = arrayList.toString();
         System.out.println(leaders);
-        sendToClient(leaders);
-
+        if(!leaders.isEmpty()){
+            sendToClient(leaders);
+        }
     }
 }
