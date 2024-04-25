@@ -1,6 +1,8 @@
 import java.sql.*;
 
-public class Account extends Server{
+public class Account{
+    protected String uri = "jdbc:sqlite:userDatabase.db";
+    protected Connection connection = null;
     private String username;
     private String password;
     private boolean loggedIn = false;
@@ -93,8 +95,8 @@ public class Account extends Server{
         }
     }
 
-    public int login(String password){
-        if(password.isEmpty()){
+    public int login(String username, String password){
+        if(password.isEmpty() || username.isEmpty()){
             return -1;
         }
         else{

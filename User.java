@@ -24,7 +24,7 @@ public class User{
     public User() {
         view = new View();
         client = new Client();
-        account = new Account();
+        //account = new Account();
         leaderboard = new Leaderboard();
         bet = new Bet();
         outcome = new Outcome();
@@ -175,55 +175,32 @@ public class User{
             String username = view.getUsername();
             String password = view.getPassword();
             System.out.println("LOGIN BUTTON HIT");
-
-            client.sendToServer(username);
-            System.out.println("Sent");
-            //String output = client.getFromServer();
-
-            //System.out.println(output);
-
-
-
-
-            /*
-            int validAccount = account.verifyAccount(username);
-
-            if(account.getLoggedIn()) {
-                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in, exit game to logout");
+            if(tabsMade) {
+                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
-            else if(validAccount == 1){
-                int loggedin = account.login(password);
-                if(loggedin == -1){
-                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password field");
-                }
-                else if(loggedin == 1){
+            else {
+
+                String servermsg = String.format("login %s %s ", username, password);
+
+                client.sendToServer(servermsg);
+                System.out.println("Sent");
+                String loggedin = client.getFromServer();
+
+                //System.out.println(output);
+                if (loggedin.equals("-1")) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password and username field");
+                } else if (loggedin.equals("1")) {
+                    tabsMade = true;
                     JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(view.jTabs, "Password incorrect, please try again");
                 }
-
+                if (tabsMade) {
+                    view.jTabs.add("COIN GAME", view.makeGameTab());
+                    view.jTabs.add("DICE GAME", view.makeDiceTab());
+                    view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
+                }
             }
-            else if (validAccount == -1){
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something in username field");
-            }
-            else{
-                JOptionPane.showMessageDialog(view.jTabs, "Username does not exist, please try again or create an account");
-            }
-
-                // upon exit need to set boolean in database to false
-
-            if(account.getLoggedIn() && !tabsMade) {
-                view.jTabs.add("COIN GAME", view.makeGameTab());
-                view.jTabs.add("DICE GAME",view.makeDiceTab());
-                view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
-                tabsMade = true;
-            }
-            if(tabsMade) {
-                // idk why this if check is here can prolly delete it
-            }
-
-             */
         }
     }
 
@@ -233,18 +210,21 @@ public class User{
             String username = view.getUsername();
             String password = view.getPassword();
 
-            if(account.getLoggedIn()) {
+            if(tabsMade) {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
             else {
-                int validAccountCreated = account.createAccount(username, password);
-                //JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
+                String servermsg = String.format("createAccount %s %s ", username, password);
 
-                if (validAccountCreated == 1) {
+                client.sendToServer(servermsg);
+                System.out.println("Sent");
+                String validAccountCreated = client.getFromServer();
+                System.out.println(validAccountCreated);
+                if (validAccountCreated.equals("1")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Account Created");
-                } else if (validAccountCreated == -1) {
+                } else if (validAccountCreated.equals("-1")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
-                } else if (validAccountCreated == 0) {
+                } else if (validAccountCreated.equals("0")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
                 } else {
                     JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");

@@ -1,3 +1,4 @@
+import java.awt.image.PackedColorModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +18,7 @@ public class Server {
     private static ServerSocket server;
     protected Connection connection = null;
     protected String uri = "jdbc:sqlite:userDatabase.db";
+    Account account;
 
 
     public static void main(String [] args) {
@@ -39,6 +41,10 @@ public class Server {
         }
     }
 
+    public Server(){
+        account = new Account();
+    }
+
     //reads information from client sends to method to be processed then sent to another method to be sent back to client
     public void readClient(){
         try {
@@ -48,7 +54,7 @@ public class Server {
                 String msg = clientMessage.readLine();
                 System.out.println(msg);
                 System.out.println("received: " + msg);
-                //sendToClient("Got message");
+                processInput(msg);
                 /*
                 System.out.println("received: " + msg);
                 String output = processesInput(msg);
@@ -78,6 +84,37 @@ public class Server {
 
         } catch (IOException e) {
             System.out.println("Error with client ");
+        }
+    }
+
+    public void processInput(String msgFromClient){
+        String[] splitMsg = msgFromClient.split(" ");
+        System.out.println(splitMsg[0]);
+
+        if(splitMsg[0].equals("login")){
+            if(splitMsg.length < 3){
+                sendToClient("-1");
+            }
+            else{
+                System.out.println(splitMsg[1]);
+                System.out.println(splitMsg[2]);
+                int loggedin = account.login(splitMsg[1], splitMsg[2]);
+                System.out.println(loggedin);
+                sendToClient(Integer.toString(loggedin));
+            }
+        }
+        else if(splitMsg[0].equals("createAccount")){
+            if(splitMsg.length < 3){
+                sendToClient("-1");
+            }
+            else{
+                System.out.println(splitMsg[1]);
+                System.out.println(splitMsg[2]);
+                int accountCreated = account.createAccount(splitMsg[1], splitMsg[2]);
+                System.out.println(accountCreated);
+                sendToClient(Integer.toString(accountCreated));
+            }
+
         }
     }
 }
