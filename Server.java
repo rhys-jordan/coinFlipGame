@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.sql.*;
 
 public class Server {
@@ -36,7 +37,12 @@ public class Server {
                 }
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            if(ex instanceof SocketException && ex.getMessage().equals("Connection reset")) {
+                System.out.println("server> waiting for client to connect...");
+            }
+            else {
+                ex.printStackTrace();
+            }
         }
     }
 

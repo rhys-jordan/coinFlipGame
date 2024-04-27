@@ -5,5 +5,5 @@ public class Main {
 }
 
 //TODO
-    // finish leaderboard
+    // communicate between server and client
     // threaded server x _ x

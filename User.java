@@ -33,6 +33,7 @@ public class User {
         view.setCreateAccountButtonListener(new createAccountButtonActionListener());
     }
 
+    /*
     public String flipCoin() {
         Random rand = new Random();
         int outcome = rand.nextInt(2);
@@ -71,6 +72,7 @@ public class User {
             return null;
         }
     }
+     */
 
     public class jTabListener implements ChangeListener {
         @Override
@@ -78,7 +80,6 @@ public class User {
             // check if logged in?
             ArrayList<String> arrayList;
 
-            // TODO CHANGE THIS
             arrayList = leaderboard.getTopThree();
             view.model.clear();
 
