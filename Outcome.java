@@ -11,7 +11,7 @@ public class Outcome extends Account{
 
     public int getResults(String betOption, String outcome){
         if (outcome == null) {
-            System.out.println("ERROR ROLLING DIE");
+            System.out.println("ERROR CALCULATING OUTCOME");
             return -1;
         }
         else if(Objects.equals(outcome, betOption)){
