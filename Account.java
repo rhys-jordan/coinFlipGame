@@ -1,7 +1,9 @@
 import java.sql.*;
 
-public class Account extends Server{
-    private String username;
+public class Account{
+    protected String uri = "jdbc:sqlite:userDatabase.db";
+    protected Connection connection = null;
+    protected String username;
     private String password;
     private boolean loggedIn = false;
     private double localBalance;
@@ -70,7 +72,6 @@ public class Account extends Server{
                 if (results.next()) {
                     int count = results.getInt(1);
                     if(count == 1){
-                        this.username = username;
                         return 1;
                     }
                 }
@@ -93,14 +94,14 @@ public class Account extends Server{
         }
     }
 
-    public int login(String password){
-        if(password.isEmpty()){
+    public int login(String username, String password){
+        if(password.isEmpty() || username.isEmpty()){
             return -1;
         }
         else{
             try {
                 connection = DriverManager.getConnection(uri);
-                String exist = "SELECT id " +
+                String exist = "SELECT id, username " +
                         "FROM users " +
                         "WHERE users.username = ? AND users.password = ? AND users.loggedIn = ?;" ;
                 PreparedStatement prepStmt = connection.prepareStatement(exist);
@@ -109,25 +110,17 @@ public class Account extends Server{
                 prepStmt.setBoolean(3,false);
 
                 ResultSet results = prepStmt.executeQuery();
-                //System.out.println(results.next());
-                //prepStmt.executeUpdate();
+
 
                 if (results.next()) {
                     int id = results.getInt("id");
+                    String user = results.getString("username");
                     //this.password = password;
+                    System.out.println(user);
                     this.loggedIn = true;
+                    this.username = user;
                     return 1;
-                    /*
-                    String cmd = "UPDATE users" +
-                            "SET users.loggedIn = ?" +
-                            "WHERE id = ?;";
-                    PreparedStatement update = connection.prepareStatement(cmd);
-                    update.setBoolean(1, true);
-                    update.setInt(2, id);
-                    update.executeUpdate();
-                     */
                 }
-                //connection.close();
 
             } catch (SQLException ex) {
                 ex.printStackTrace();

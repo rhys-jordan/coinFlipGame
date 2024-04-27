@@ -1,9 +1,13 @@
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class Outcome extends Server{
+public class Outcome extends Account{
+
+    protected String uri = "jdbc:sqlite:userDatabase.db";
+    protected Connection connection = null;
 
     public int getResults(String betOption, String outcome){
         if (outcome == null) {

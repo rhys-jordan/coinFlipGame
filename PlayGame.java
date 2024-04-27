@@ -1,7 +1,6 @@
-import javax.swing.*;
 import java.util.Random;
 
-public class Bet {
+public class PlayGame {
 
 
     public String flipCoin() {
@@ -42,6 +41,4 @@ public class Bet {
             return null;
         }
     }
-
-
 }

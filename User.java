@@ -3,28 +3,23 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Random;
 
-public class User {
+public class User{
 
     private View view;
     private Client client;
-    private Account account;
-    private Leaderboard leaderboard;
-    private Bet bet;
-    private Outcome outcome;
     private boolean tabsMade = false;
 
     public User() {
         view = new View();
         client = new Client();
-        account = new Account();
-        leaderboard = new Leaderboard();
-        bet = new Bet();
-        outcome = new Outcome();
 
         view.setAddChangeListener(new jTabListener());
         view.setLoginButtonListener(new loginButtonListener());
@@ -33,61 +28,28 @@ public class User {
         view.setCreateAccountButtonListener(new createAccountButtonActionListener());
     }
 
-    /*
-    public String flipCoin() {
-        Random rand = new Random();
-        int outcome = rand.nextInt(2);
-
-        if(outcome == 1) {
-            return "HEADS";
-        }
-        else{
-            return "TAILS";
-        }
-    }
-
-    public  String rollDice() {
-        Random rand = new Random();
-        int outcome = rand.nextInt(6);
-        if (outcome == 0) {
-            return "ONE";
-        }
-        else if (outcome == 1) {
-            return "TWO";
-        }
-        else if (outcome == 2) {
-            return "THREE";
-        }
-        else if (outcome == 3) {
-            return "FOUR";
-        }
-        else if (outcome == 4) {
-            return "FIVE";
-        }
-        else if (outcome == 5) {
-            return "SIX";
-        }
-        else {
-            System.out.println("ERROR: couldnt flip coin");
-            return null;
-        }
-    }
-     */
 
     public class jTabListener implements ChangeListener {
         @Override
         public void stateChanged(ChangeEvent e) {
             // check if logged in?
             ArrayList<String> arrayList;
-
-            arrayList = leaderboard.getTopThree();
             view.model.clear();
 
-            for (String s : arrayList) {
-                // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)
-                // should reformat cmd to only get relevant information. i.e. only display username and balance (definitely wouldn't want to display password)
-                view.model.addElement(s);
-            }
+            String servermsg = String.format("leaderboard ");
+            client.sendToServer(servermsg);
+            String leaders = client.getFromServer();
+            System.out.println(leaders);
+            String[] leaderList = leaders.split(" ");
+            String header = String.format("%s %25s %14s ","Rank", "Username", "Balance");
+            String first = String.format("1 %30s %20s ", leaderList[0], leaderList[1]);
+            String second = String.format("2 %30s %20s ", leaderList[2], leaderList[3]);
+            String third = String.format("3 %30s %20s ", leaderList[4], leaderList[5]);
+            view.model.addElement(header);
+            view.model.addElement("-----------------------------------------------------------------------------------");
+            view.model.addElement(first);
+            view.model.addElement(second);
+            view.model.addElement(third);
         }
     }
 
@@ -96,7 +58,37 @@ public class User {
         @Override
         public void actionPerformed(ActionEvent e) {
             String betAmount = view.getBetAmount();
+            String betType = view.getBetType();
+
+            String servermsg = String.format("flipCoin %s %s ", betAmount, betType);
+
+            client.sendToServer(servermsg);
+            String coinfliped = client.getFromServer();
+            String[] serverResults = coinfliped.split(" ");
+            if(serverResults.length < 3){
+                System.out.println("Error");
+            }
+            else {
+                String results = serverResults[0];
+                String betOutcome = serverResults[1];
+                String currentBalance = serverResults[2];
+                System.out.println(coinfliped);
+                String resultingString;
+                if (results.equals("1")) {
+                    resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
+                } else if (results.equals("0")) {
+                    resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+                } else {
+                    resultingString = "ERROR Flipping coin";
+                }
+                view.setResultTextField(resultingString);
+                view.setCurrentBalanceTextField(Double.valueOf(currentBalance));
+            }
+
+
+            /*
             Double accountBalance = account.getAccountBalance();
+
 
             try {
                 double bet = Double.parseDouble(betAmount);
@@ -143,6 +135,8 @@ public class User {
             account.setLocalBalance(currentBalance);
             view.setCurrentBalanceTextField(currentBalance);
 
+             */
+
             /*
             if(Objects.equals(outcome, betType)) {
                 String sendOutcome = "Result = " + outcome + ", you win " + betAmount + " dollars!";
@@ -173,41 +167,32 @@ public class User {
         public void actionPerformed(ActionEvent e) {
             String username = view.getUsername();
             String password = view.getPassword();
-            int validAccount = account.verifyAccount(username);
-
-            if(account.getLoggedIn()) {
-                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in, exit game to logout");
+            System.out.println("LOGIN BUTTON HIT");
+            if(tabsMade) {
+                JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
-            else if(validAccount == 1){
-                int loggedin = account.login(password);
-                if(loggedin == -1){
-                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password field");
-                }
-                else if(loggedin == 1){
+            else {
+
+                String servermsg = String.format("login %s %s ", username, password);
+
+                client.sendToServer(servermsg);
+                System.out.println("Sent");
+                String loggedin = client.getFromServer();
+
+                //System.out.println(output);
+                if (loggedin.equals("-1")) {
+                    JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password and username field");
+                } else if (loggedin.equals("1")) {
+                    tabsMade = true;
                     JOptionPane.showMessageDialog(view.jTabs, "You have successfully logged in! You now have access to the game tab!");
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(view.jTabs, "Password incorrect, please try again");
                 }
-
-            }
-            else if (validAccount == -1){
-                JOptionPane.showMessageDialog(view.jTabs, "Please enter something in username field");
-            }
-            else{
-                JOptionPane.showMessageDialog(view.jTabs, "Username does not exist, please try again or create an account");
-            }
-
-                // upon exit need to set boolean in database to false
-
-            if(account.getLoggedIn() && !tabsMade) {
-                view.jTabs.add("COIN GAME", view.makeGameTab());
-                view.jTabs.add("DICE GAME",view.makeDiceTab());
-                view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
-                tabsMade = true;
-            }
-            if(tabsMade) {
-                // idk why this if check is here can prolly delete it
+                if (tabsMade) {
+                    view.jTabs.add("COIN GAME", view.makeGameTab());
+                    view.jTabs.add("DICE GAME", view.makeDiceTab());
+                    view.jTabs.add("LEADERBOARD", view.makeLeaderboardTab());
+                }
             }
         }
     }
@@ -218,18 +203,20 @@ public class User {
             String username = view.getUsername();
             String password = view.getPassword();
 
-            if(account.getLoggedIn()) {
+            if(tabsMade) {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
             else {
-                int validAccountCreated = account.createAccount(username, password);
-                //JOptionPane.showMessageDialog(view.jTabs, accountCreatedMsg);
+                String servermsg = String.format("createAccount %s %s ", username, password);
 
-                if (validAccountCreated == 1) {
+                client.sendToServer(servermsg);
+                String validAccountCreated = client.getFromServer();
+                System.out.println(validAccountCreated);
+                if (validAccountCreated.equals("1")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Account Created");
-                } else if (validAccountCreated == -1) {
+                } else if (validAccountCreated.equals("-1")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
-                } else if (validAccountCreated == 0) {
+                } else if (validAccountCreated.equals("0")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
                 } else {
                     JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
@@ -243,8 +230,35 @@ public class User {
         @Override
         public void actionPerformed(ActionEvent e) {
             String betAmount = view.getDiceBetAmount();
-            Double accountBalance = account.getAccountBalance();
+            String betType = view.getDiceOption();
 
+            String servermsg = String.format("rollDice %s %s ", betAmount, betType);
+
+            client.sendToServer(servermsg);
+
+            String diceRolled = client.getFromServer();
+            String[] serverResults = diceRolled.split(" ");
+            String results = serverResults[0];
+            String betOutcome = serverResults[1];
+            String currentBalance = serverResults[2];
+            System.out.println(diceRolled);
+            String resultingString;
+            if(results.equals("1")){
+                //betAmount = 3*betAmount;
+                resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
+            }
+            else if(results.equals("0")){
+                resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+            }
+            else{
+                resultingString = "ERROR Flipping coin";
+            }
+            view.setDiceResultTextField(resultingString);
+            view.setDiceBalanceTextField(Double.valueOf(currentBalance));
+
+
+
+            /*
             try {
                 double bet = Double.parseDouble(betAmount);
                 if(bet != (int)bet) {
@@ -280,8 +294,7 @@ public class User {
                 sendOutcome = "ERROR Flipping coin";
             }
             view.setDiceResultTextField(sendOutcome);
-            currentBalance = outcome.updateBalance(bet, currentBalance, username);
-            //currentBalance = account.getAccountBalance();
+            currentBalance = outcome.updateBalance(bet, currentBalance,username);
             account.setLocalBalance(currentBalance);
             view.setDiceBalanceTextField(currentBalance);
 

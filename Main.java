@@ -5,5 +5,6 @@ public class Main {
 }
 
 //TODO
-    // communicate between server and client
     // threaded server x _ x
+    // Error checking
+    // Delete Unneeded code
