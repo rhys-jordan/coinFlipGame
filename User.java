@@ -65,21 +65,35 @@ public class User{
             client.sendToServer(servermsg);
             String coinfliped = client.getFromServer();
             String[] serverResults = coinfliped.split(" ");
+            String resultingString = null;
+            String results = null;
+
             if(serverResults.length < 3){
-                System.out.println("Error");
+                 results = serverResults[0];
+                if (results.equals("-1")){
+                    //System.out.println("got an error");
+                    resultingString = "ERROR: please enter an integer input";
+                } else if (results.equals("-2")) {
+                    resultingString = "ERROR: you cannot bet more than is in your account";
+                } else if (results.equals("-3")) {
+                    resultingString = "ERROR: you cannot enter a negative bet";
+                } else if (results.equals("-4")) {
+                    resultingString = "ERROR: please enter a round number i.e. no decimals";
+                }
+
+                view.setResultTextField(resultingString);
+
             }
             else {
-                String results = serverResults[0];
+                results = serverResults[0];
                 String betOutcome = serverResults[1];
                 String currentBalance = serverResults[2];
                 System.out.println(coinfliped);
-                String resultingString;
+
                 if (results.equals("1")) {
                     resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
                 } else if (results.equals("0")) {
                     resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
-                } else {
-                    resultingString = "ERROR Flipping coin";
                 }
                 view.setResultTextField(resultingString);
                 view.setCurrentBalanceTextField(Double.valueOf(currentBalance));
@@ -238,23 +252,47 @@ public class User{
 
             String diceRolled = client.getFromServer();
             String[] serverResults = diceRolled.split(" ");
-            String results = serverResults[0];
-            String betOutcome = serverResults[1];
-            String currentBalance = serverResults[2];
-            System.out.println(diceRolled);
-            String resultingString;
-            if(results.equals("1")){
-                //betAmount = 3*betAmount;
-                resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
+            String results = null;
+            String resultingString = null;
+
+            if(serverResults.length < 3){
+                results = serverResults[0];
+
+                if(results.equals("-1")) {
+                    resultingString = "ERROR: please enter an integer input";
+                } else if (results.equals("-2")) {
+                    resultingString = "ERROR: you cannot bet more than is in your account";
+                } else if (results.equals("-3")) {
+                    resultingString = "ERROR: you cannot enter a negative bet";
+                } else if (results.equals("-4")) {
+                    resultingString = "ERROR: please enter a round number i.e. no decimals";
+                }
+
+                view.setDiceResultTextField(resultingString);
             }
-            else if(results.equals("0")){
-                resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+
+            else {
+                results = serverResults[0];
+                String betOutcome = serverResults[1];
+                String currentBalance = serverResults[2];
+                System.out.println(diceRolled);
+                if(results.equals("1")){
+                    try {
+
+                    } catch (NumberFormatException ex) {
+                        System.out.println("ERROR, couldnt convert bet string to int");
+                    }
+                    //betAmount = 3*betAmount;
+                    resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
+                }
+                else if(results.equals("0")){
+                    resultingString = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
+                }
+                view.setDiceResultTextField(resultingString);
+                view.setDiceBalanceTextField(Double.valueOf(currentBalance));
             }
-            else{
-                resultingString = "ERROR Flipping coin";
-            }
-            view.setDiceResultTextField(resultingString);
-            view.setDiceBalanceTextField(Double.valueOf(currentBalance));
+
+
 
 
 

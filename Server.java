@@ -128,9 +128,21 @@ public class Server {
     public void processCoinFLip(String betAmount, String betType){
         try {
             double bet = Double.parseDouble(betAmount);
+            double currentBalance = account.getAccountBalance();
             String betOutcome = game.flipCoin();
             int results = outcome.getResults(betType, betOutcome);
-            double currentBalance = account.getAccountBalance();
+
+            if(bet > currentBalance) {
+                sendToClient("-2");
+                return;
+            } else if (bet < 0) {
+                sendToClient("-3");
+                return;
+            } else if (bet != (int)bet) {
+                sendToClient("-4");
+                return;
+            }
+
             String username = account.getUsername();
             String clientMsg;
             if(results != -1){
@@ -157,6 +169,18 @@ public class Server {
             String betOutcome = game.rollDice();
             int results = outcome.getResults(betType, betOutcome);
             double currentBalance = account.getAccountBalance();
+
+            if(bet > currentBalance) {
+                sendToClient("-2");
+                return;
+            } else if (bet < 0) {
+                sendToClient("-3");
+                return;
+            } else if (bet != (int)bet) {
+                sendToClient("-4");
+                return;
+            }
+
             String username = account.getUsername();
             String clientMsg;
             if(results != -1){
