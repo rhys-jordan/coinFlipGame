@@ -31,7 +31,6 @@ public class Server {
                 System.out.println("connected to client " + conn);
                 ClientHandler clientSock = new ClientHandler(conn);
                 new Thread(clientSock).start();
-                //s.readClient();
             }
 
         } catch (IOException e) {

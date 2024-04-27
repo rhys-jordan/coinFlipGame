@@ -32,8 +32,6 @@ public class User{
     public class jTabListener implements ChangeListener {
         @Override
         public void stateChanged(ChangeEvent e) {
-            // check if logged in?
-            ArrayList<String> arrayList;
             view.model.clear();
 
             String servermsg = String.format("leaderboard ");
@@ -71,7 +69,6 @@ public class User{
             if(serverResults.length < 3){
                  results = serverResults[0];
                 if (results.equals("-1")){
-                    //System.out.println("got an error");
                     resultingString = "ERROR: please enter an integer input";
                 } else if (results.equals("-2")) {
                     resultingString = "ERROR: you cannot bet more than is in your account";
@@ -80,9 +77,7 @@ public class User{
                 } else if (results.equals("-4")) {
                     resultingString = "ERROR: please enter a round number i.e. no decimals";
                 }
-
                 view.setResultTextField(resultingString);
-
             }
             else {
                 results = serverResults[0];
@@ -98,80 +93,6 @@ public class User{
                 view.setResultTextField(resultingString);
                 view.setCurrentBalanceTextField(Double.valueOf(currentBalance));
             }
-
-
-            /*
-            Double accountBalance = account.getAccountBalance();
-
-
-            try {
-                double bet = Double.parseDouble(betAmount);
-                if(bet != (int)bet) {
-                    JOptionPane.showMessageDialog(view.jTabs, "please enter integer input or make sure input is an integer!");
-                    return;
-                }
-                else if (bet > accountBalance) {
-                    JOptionPane.showMessageDialog(view.jTabs, "you cannot bet more than you have in your account");
-                    return;
-                }
-            } catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(view.jTabs, "please enter valid input for bet. must be a number");
-                return;
-            }
-
-            String betType = view.getBetType();
-            if(Objects.equals(betType, "NO BUTTON SELECTED")) {
-                JOptionPane.showMessageDialog(view.jTabs, "Please select heads or tails for your bet!");
-                return;
-            }
-
-            // then send betType into server/db for game logic
-            String betOutcome = bet.flipCoin();
-            int results = outcome.getResults(betType, betOutcome);
-            double currentBalance = account.getAccountBalance();
-            double bet = Double.parseDouble(betAmount);
-            String username = account.getUsername();
-            String sendOutcome;
-            if(results == 1){
-                sendOutcome = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
-
-            }
-            else if(results == 0){
-                bet = bet *-1;
-                sendOutcome = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
-            }
-            else{
-                sendOutcome = "ERROR Flipping coin";
-            }
-            view.setResultTextField(sendOutcome);
-            currentBalance = outcome.updateBalance(bet, currentBalance, username);
-            //currentBalance = account.getAccountBalance();
-            account.setLocalBalance(currentBalance);
-            view.setCurrentBalanceTextField(currentBalance);
-
-             */
-
-            /*
-            if(Objects.equals(outcome, betType)) {
-                String sendOutcome = "Result = " + outcome + ", you win " + betAmount + " dollars!";
-                view.setResultTextField(sendOutcome);
-                double bet = Double.parseDouble(betAmount);
-                double currentBalance = account.getAccountBalance();
-                account.addBalance(bet, currentBalance);
-                currentBalance = account.getAccountBalance();
-                view.setCurrentBalanceTextField(currentBalance);
-            }
-            else {
-                String sendOutcome = "Result = " + outcome + ", you lost " + betAmount + " dollars :(";
-                view.setResultTextField(sendOutcome);
-                double bet = Double.parseDouble(betAmount);
-                double currentBalance = account.getAccountBalance();
-                account.removeBalance(bet, currentBalance);
-                currentBalance = account.getAccountBalance();
-                view.setCurrentBalanceTextField(currentBalance);
-            }
-
-             */
         }
     }
 
@@ -186,14 +107,12 @@ public class User{
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
             else {
-
                 String servermsg = String.format("login %s %s ", username, password);
 
                 client.sendToServer(servermsg);
                 System.out.println("Sent");
                 String loggedin = client.getFromServer();
 
-                //System.out.println(output);
                 if (loggedin.equals("-1")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Please enter something in password and username field");
                 } else if (loggedin.equals("1")) {
@@ -291,82 +210,6 @@ public class User{
                 view.setDiceResultTextField(resultingString);
                 view.setDiceBalanceTextField(Double.valueOf(currentBalance));
             }
-
-
-
-
-
-            /*
-            try {
-                double bet = Double.parseDouble(betAmount);
-                if(bet != (int)bet) {
-                    JOptionPane.showMessageDialog(view.jTabs, "please enter integer input or make sure input is an integer!");
-                    return;
-                }
-                else if (bet > accountBalance) {
-                    JOptionPane.showMessageDialog(view.jTabs, "you cannot bet more than you have in your account");
-                    return;
-                }
-            } catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(view.jTabs, "please enter valid input for bet. must be a number");
-                return;
-            }
-            String betType = view.getDiceOption();
-            String betOutcome = bet.rollDice();
-            int results = outcome.getResults(betType, betOutcome);
-
-            double currentBalance = account.getAccountBalance();
-            double bet = Double.parseDouble(betAmount);
-            String username = account.getUsername();
-            String sendOutcome;
-            if(results == 1){
-                bet = 3*bet;
-                sendOutcome = "Result = " + betOutcome + ", you win " + bet + " dollars!";
-
-            }
-            else if(results == 0){
-                bet = bet *-1;
-                sendOutcome = "Result = " + betOutcome + ", you lost " + betAmount + " dollars :(";
-            }
-            else{
-                sendOutcome = "ERROR Flipping coin";
-            }
-            view.setDiceResultTextField(sendOutcome);
-            currentBalance = outcome.updateBalance(bet, currentBalance,username);
-            account.setLocalBalance(currentBalance);
-            view.setDiceBalanceTextField(currentBalance);
-
-            //System.out.println("bet = " + betOption + " outcome = " + outcome);
-            /*
-            if (outcome == null) {
-                System.out.println("ERROR ROLLING DIE");
-            }
-
-            if(Objects.equals(outcome, betOption)) {
-                double bet = 3*(Double.parseDouble(diceBetAmount));
-                String sendOutcome = "Result = " + outcome + ", you win " + (int)bet + " dollars!";
-                view.setDiceResultTextField(sendOutcome);
-                double currentBalance = account.getAccountBalance();
-                account.addBalance(bet, currentBalance);
-                currentBalance = account.getAccountBalance();
-                view.setDiceBalanceTextField(currentBalance);
-            }
-            else {
-                String sendOutcome = "Result = " + outcome + ", you lost " + diceBetAmount + " dollars :(";
-                view.setDiceResultTextField(sendOutcome);
-                double bet = Double.parseDouble(diceBetAmount);
-                double currentBalance = account.getAccountBalance();
-                account.removeBalance(bet, currentBalance);
-                currentBalance = account.getAccountBalance();
-                view.setDiceBalanceTextField(currentBalance);
-            }
-
-             */
-
-
-
-            //System.out.println("bet = " + betOption);
-
         }
     }
 }

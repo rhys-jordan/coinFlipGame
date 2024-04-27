@@ -4,7 +4,6 @@ public class Account{
     protected String uri = "jdbc:sqlite:userDatabase.db";
     protected Connection connection = null;
     protected String username;
-    private String password;
     private boolean loggedIn = false;
     private double localBalance;
 
@@ -75,7 +74,6 @@ public class Account{
                         return 1;
                     }
                 }
-                //connection.close();
                 return 0;
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -115,7 +113,6 @@ public class Account{
                 if (results.next()) {
                     int id = results.getInt("id");
                     String user = results.getString("username");
-                    //this.password = password;
                     System.out.println(user);
                     this.loggedIn = true;
                     this.username = user;
@@ -152,83 +149,16 @@ public class Account{
 
             if(results.next()) {
                 localBalance = results.getDouble("balance");
-                //connection.close();
                 return localBalance;
             }
             else {
                 System.out.println("Error: couldn't get balance");
-                //connection.close();
                 return -1;
             }
 
         } catch (SQLException ex){
             ex.printStackTrace();
             return  -1;
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-
-        }
-    }
-
-    public void addBalance(double winnings, double currentBalance) {
-
-        double newBalance = currentBalance + winnings;
-
-        try {
-            connection = DriverManager.getConnection(uri);
-            //Statement stmt = connection.createStatement();
-            System.out.println("new balance = " + newBalance + " username = " + username);
-
-            String updateQuery = "UPDATE users " +
-                    "SET balance = ? " +
-                    "WHERE username = ?;";
-            PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
-            prepStmt.setDouble(1,newBalance);
-            prepStmt.setString(2,username);
-            prepStmt.executeUpdate();
-            localBalance = newBalance;
-            //connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.out.println("error increasing balance");
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-
-        }
-    }
-
-    public void removeBalance(double losings, double currentBalance) {
-
-        double newBalance = currentBalance - losings;
-
-        try {
-            connection = DriverManager.getConnection(uri);
-            System.out.println("new balance = " + newBalance + " username = " + username);
-            //Statement stmt = connection.createStatement();
-            String updateQuery = "UPDATE users " +
-                    "SET balance = ? " +
-                    "WHERE username = ?;";
-            PreparedStatement prepStmt = connection.prepareStatement(updateQuery);
-            prepStmt.setDouble(1,newBalance);
-            prepStmt.setString(2,username);
-            prepStmt.executeUpdate();
-            localBalance = newBalance;
-            //connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.out.println("error decreasing balance");
         } finally {
             try {
                 if (connection != null) {

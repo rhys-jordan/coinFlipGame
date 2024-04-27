@@ -9,8 +9,6 @@ import java.util.ArrayList;
 public class Client {
 
     private Socket socket;
-    //private BufferedReader reader;
-    //private PrintWriter writer;
 
     public Client() {
         try {
@@ -19,16 +17,11 @@ public class Client {
             socket = new Socket("127.0.0.1",5000);
             System.out.println("client> success connecting");
 
-            //InputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
-            //reader = new BufferedReader(streamReader);
-            //writer = new PrintWriter(socket.getOutputStream());
         } catch(IOException ex) {
             System.out.println("SERVER IS NOT UP");
             System.exit(0);
         }
     }
-
-
 
     public void sendToServer(String input){
         try {
@@ -51,6 +44,4 @@ public class Client {
             return "Cannot receive from server";
         }
     }
-
-
 }

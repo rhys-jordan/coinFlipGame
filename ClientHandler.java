@@ -25,7 +25,6 @@ public class ClientHandler implements Runnable{
         readClient();
     }
 
-    //reads information from client sends to method to be processed then sent to another method to be sent back to client
     public void readClient(){
         try {
             while(true){
@@ -153,16 +152,7 @@ public class ClientHandler implements Runnable{
         System.out.println("display leaderboard");
         String leaders;
         leaders = leaderboard.getTopThree();
-        /*
-        for (String s : arrayList) {
-            // sort arraylist(since already in arraylist, should maybe be a separate function?) then grab top 3 (probably outside of loop)
-            // should reformat cmd to only get relevant information. i.e. only display username and balance (definitely wouldn't want to display password)
-            System.out.println(s);
-        }
 
-         */
-
-        //String output = arrayList.toString();
         System.out.println(leaders);
         if(!leaders.isEmpty()){
             sendToClient(leaders);

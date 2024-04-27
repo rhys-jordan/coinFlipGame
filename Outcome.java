@@ -39,8 +39,6 @@ public class Outcome extends Account{
             prepStmt.setDouble(1,newBalance);
             prepStmt.setString(2,username);
             prepStmt.executeUpdate();
-            //localBalance = newBalance;
-            //connection.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("error increasing balance");
@@ -53,7 +51,6 @@ public class Outcome extends Account{
                 ex.printStackTrace();
             }
             return newBalance;
-
         }
     }
 }
