@@ -39,15 +39,20 @@ public class User{
             String leaders = client.getFromServer();
             System.out.println(leaders);
             String[] leaderList = leaders.split(" ");
-            String header = String.format("%s %25s %14s ","Rank", "Username", "Balance");
-            String first = String.format("1 %30s %20s ", leaderList[0], leaderList[1]);
-            String second = String.format("2 %30s %20s ", leaderList[2], leaderList[3]);
-            String third = String.format("3 %30s %20s ", leaderList[4], leaderList[5]);
-            view.model.addElement(header);
-            view.model.addElement("-----------------------------------------------------------------------------------");
-            view.model.addElement(first);
-            view.model.addElement(second);
-            view.model.addElement(third);
+            if(leaderList.length < 6) {
+                view.model.addElement("ERROR: not enough users to display top 3 users");
+            }
+            else {
+                String header = String.format("%s %25s %14s ","Rank", "Username", "Balance");
+                String first = String.format("1 %30s %20s ", leaderList[0], leaderList[1]);
+                String second = String.format("2 %30s %20s ", leaderList[2], leaderList[3]);
+                String third = String.format("3 %30s %20s ", leaderList[4], leaderList[5]);
+                view.model.addElement(header);
+                view.model.addElement("-----------------------------------------------------------------------------------");
+                view.model.addElement(first);
+                view.model.addElement(second);
+                view.model.addElement(third);
+            }
         }
     }
 

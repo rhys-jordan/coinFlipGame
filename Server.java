@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 public class Server {
     private static ServerSocket server;
+    protected String uri = "jdbc:sqlite:userDatabase.db";
+    protected Connection connection = null;
 
     public static void main(String [] args) {
         Server s = new Server();
@@ -29,6 +31,7 @@ public class Server {
                 System.out.println("waiting for client to connect..");
                 Socket conn = server.accept();
                 System.out.println("connected to client " + conn);
+                createDatabase();
                 ClientHandler clientSock = new ClientHandler(conn);
                 new Thread(clientSock).start();
             }
@@ -39,6 +42,23 @@ public class Server {
             }catch (IOException ex){
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public void createDatabase() {
+        try {
+            connection = DriverManager.getConnection(uri);
+            System.out.println("server> success connecting to database");
+            String cmd = "CREATE TABLE IF NOT EXISTS users (" +
+                    "id INTEGER PRIMARY KEY," +
+                    "username STRING," +
+                    "password STRING," +
+                    "balance DOUBLE," +
+                    "loggedIn BOOLEAN);";
+            connection.createStatement().executeUpdate(cmd);
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 }
