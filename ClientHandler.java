@@ -1,64 +1,35 @@
-import java.awt.image.PackedColorModel;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.sql.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class Server {
-    //private static Socket conn;
-    private static ServerSocket server;
-    protected Connection connection = null;
-    protected String uri = "jdbc:sqlite:userDatabase.db";
-    Account account;
-    PlayGame game;
-    Outcome outcome;
-    Leaderboard leaderboard;
+public class ClientHandler implements Runnable{
+    private final Socket clientSocket;
+    private Account account;
+    private PlayGame game;
+    private Outcome outcome;
+    private Leaderboard leaderboard;
 
 
-    public static void main(String [] args) {
-        try{
-            Server s = new Server();
-            server = new ServerSocket(5000);
-            while(true){
-                System.out.println("waiting for client to connect..");
-                Socket conn = server.accept();
-                System.out.println("connected to client " + conn);
-                ClientHandler clientSock = new ClientHandler(conn);
-                new Thread(clientSock).start();
-                //s.readClient();
-            }
-
-        } catch (IOException e) {
-            try {
-                server.close();
-            }catch (IOException ex){
-                ex.printStackTrace();
-            }
-        }
+    public ClientHandler(Socket socket){
+        this.clientSocket = socket;
+        this.account = new Account();
+        this.game = new PlayGame();
+        this.outcome = new Outcome();
+        this.leaderboard = new Leaderboard();
     }
-    /*
-    public Server(){
-        account = new Account();
-        game = new PlayGame();
-        outcome = new Outcome();
-        leaderboard = new Leaderboard();
+
+    @Override
+    public void run() {
+        readClient();
     }
 
     //reads information from client sends to method to be processed then sent to another method to be sent back to client
     public void readClient(){
         try {
             while(true){
-                BufferedReader clientMessage = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                BufferedReader clientMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 System.out.println("waiting for client to send data");
                 String msg = clientMessage.readLine();
                 System.out.println(msg);
@@ -68,7 +39,7 @@ public class Server {
 
         }catch (IOException e){
             try {
-                conn.close();
+                clientSocket.close();
             }catch (IOException ex){
                 System.out.println("Could not close server");
             }
@@ -79,7 +50,7 @@ public class Server {
     public void sendToClient(String response){
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(conn.getOutputStream());
+            writer = new PrintWriter(clientSocket.getOutputStream());
             writer.println(response);
             writer.flush();
 
@@ -189,7 +160,7 @@ public class Server {
             System.out.println(s);
         }
 
-
+         */
 
         //String output = arrayList.toString();
         System.out.println(leaders);
@@ -197,5 +168,4 @@ public class Server {
             sendToClient(leaders);
         }
     }
-    */
 }

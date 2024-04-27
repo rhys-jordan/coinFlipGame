@@ -6,5 +6,6 @@ public class Main {
 }
 
 //TODO
-    // finish leaderboard
     // threaded server x _ x
+    // Error checking
+    // Delete Unneeded code

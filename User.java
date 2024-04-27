@@ -50,9 +50,6 @@ public class User{
             view.model.addElement(first);
             view.model.addElement(second);
             view.model.addElement(third);
-
-
-
         }
     }
 
