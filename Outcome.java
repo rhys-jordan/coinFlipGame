@@ -11,7 +11,7 @@ public class Outcome extends Account{
 
     public int getResults(String betOption, String outcome){
         if (outcome == null) {
-            System.out.println("ERROR CALCULATING OUTCOME");
+            System.out.println("server> ERROR CALCULATING OUTCOME");
             return -1;
         }
         else if(Objects.equals(outcome, betOption)){
@@ -41,7 +41,7 @@ public class Outcome extends Account{
             prepStmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            System.out.println("error increasing balance");
+            System.out.println("server> error increasing balance");
         } finally {
             try {
                 if (connection != null) {

@@ -119,7 +119,7 @@ public class User{
                 String servermsg = String.format("login %s %s ", username, password);
 
                 client.sendToServer(servermsg);
-                //System.out.println("Sent");
+                //System.out.println("client> Sent");
                 String loggedin = client.getFromServer();
 
                 if (loggedin.equals("-1")) {

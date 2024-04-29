@@ -28,9 +28,9 @@ public class Server {
         try{
             server = new ServerSocket(5000);
             while(true){
-                System.out.println("waiting for client to connect..");
+                System.out.println("server> waiting for new client to connect..");
                 Socket conn = server.accept();
-                System.out.println("connected to client " + conn);
+                System.out.println("server> connected to client " + conn);
                 createDatabase();
                 ClientHandler clientSock = new ClientHandler(conn);
                 new Thread(clientSock).start();

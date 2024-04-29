@@ -38,7 +38,7 @@ public class Account{
                 prepStmt.executeUpdate();
                 //connection.close();
             } catch (SQLException ex){
-                System.out.println("error check");
+                System.out.println("error");
                 ex.printStackTrace();
             } finally {
                 try {

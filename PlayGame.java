@@ -2,7 +2,6 @@ import java.util.Random;
 
 public class PlayGame {
 
-
     public String flipCoin() {
         Random rand = new Random();
         int outcome = rand.nextInt(2);

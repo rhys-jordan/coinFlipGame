@@ -29,10 +29,10 @@ public class ClientHandler implements Runnable{
         try {
             while(true){
                 BufferedReader clientMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                System.out.println("waiting for client to send data");
+                System.out.println("server> waiting for client to send data");
                 String msg = clientMessage.readLine();
-                System.out.println(msg);
-                System.out.println("received: " + msg);
+                //System.out.println(msg);
+                System.out.println("server> received: " + msg);
                 processInput(msg);
             }
 
@@ -54,13 +54,13 @@ public class ClientHandler implements Runnable{
             writer.flush();
 
         } catch (IOException e) {
-            System.out.println("Error with client ");
+            System.out.println("server> error with client ");
         }
     }
 
     public void processInput(String msgFromClient){
         String[] splitMsg = msgFromClient.split(" ");
-        System.out.println(splitMsg[0]);
+        //System.out.println(splitMsg[0]);
 
         if(splitMsg.length < 3){
             if(splitMsg[0].equals("leaderboard")){
@@ -84,13 +84,13 @@ public class ClientHandler implements Runnable{
 
     public void processLogin(String username, String password){
         int loggedin = account.login(username, password);
-        System.out.println(loggedin);
+        //System.out.println(loggedin);
         sendToClient(Integer.toString(loggedin));
     }
 
     public void processCreateAccount(String username, String password){
         int accountCreated = account.createAccount(username, password);
-        System.out.println(accountCreated);
+        //System.out.println(accountCreated);
         sendToClient(Integer.toString(accountCreated));
     }
 
@@ -194,7 +194,7 @@ public class ClientHandler implements Runnable{
         String leaders;
         leaders = leaderboard.getTopThree();
 
-        System.out.println(leaders);
+        //System.out.println(leaders);
         if(!leaders.isEmpty()){
             sendToClient(leaders);
         }
