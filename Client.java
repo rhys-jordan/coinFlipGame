@@ -27,10 +27,10 @@ public class Client {
         try {
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             writer.println(input);
-            System.out.println("sent request to server: " + input);
+            //System.out.println("sent request to server: " + input);
             writer.flush();
         }catch (IOException e){
-            System.out.println("Cannot send to server");
+            //System.out.println("Cannot send to server");
         }
     }
 
@@ -38,7 +38,7 @@ public class Client {
         try {
             BufferedReader serverReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String serverMsg = serverReader.readLine();
-            System.out.println("server response: " + serverMsg);
+            //System.out.println("server response: " + serverMsg);
             return serverMsg;
         }catch (IOException e){
             return "Cannot receive from server";

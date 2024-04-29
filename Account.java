@@ -113,7 +113,7 @@ public class Account{
                 if (results.next()) {
                     int id = results.getInt("id");
                     String user = results.getString("username");
-                    System.out.println(user);
+                    //System.out.println(user);
                     this.loggedIn = true;
                     this.username = user;
                     return 1;

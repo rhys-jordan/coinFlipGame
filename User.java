@@ -37,7 +37,7 @@ public class User{
             String servermsg = String.format("leaderboard ");
             client.sendToServer(servermsg);
             String leaders = client.getFromServer();
-            System.out.println(leaders);
+            //System.out.println(leaders);
             String[] leaderList = leaders.split(" ");
             if(leaderList.length < 6) {
                 view.model.addElement("ERROR: not enough users to display top 3 users");
@@ -81,14 +81,18 @@ public class User{
                     resultingString = "ERROR: you cannot enter a negative bet";
                 } else if (results.equals("-4")) {
                     resultingString = "ERROR: please enter a round number i.e. no decimals";
+                } else if (results.equals("-5")) {
+                    resultingString = "YOU SUCK AT GAMBLING, you have lost all your money, here's 50 free dollars for your addiction :)";
+                    view.setCurrentBalanceTextField((double)50);
                 }
+
                 view.setResultTextField(resultingString);
             }
             else {
                 results = serverResults[0];
                 String betOutcome = serverResults[1];
                 String currentBalance = serverResults[2];
-                System.out.println(coinfliped);
+                //System.out.println(coinfliped);
 
                 if (results.equals("1")) {
                     resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
@@ -107,7 +111,7 @@ public class User{
         public void actionPerformed(ActionEvent e) {
             String username = view.getUsername();
             String password = view.getPassword();
-            System.out.println("LOGIN BUTTON HIT");
+            //System.out.println("LOGIN BUTTON HIT");
             if(tabsMade) {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
@@ -115,7 +119,7 @@ public class User{
                 String servermsg = String.format("login %s %s ", username, password);
 
                 client.sendToServer(servermsg);
-                System.out.println("Sent");
+                //System.out.println("Sent");
                 String loggedin = client.getFromServer();
 
                 if (loggedin.equals("-1")) {
@@ -149,7 +153,7 @@ public class User{
 
                 client.sendToServer(servermsg);
                 String validAccountCreated = client.getFromServer();
-                System.out.println(validAccountCreated);
+                //System.out.println(validAccountCreated);
                 if (validAccountCreated.equals("1")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Account Created");
                 } else if (validAccountCreated.equals("-1")) {
@@ -190,6 +194,9 @@ public class User{
                     resultingString = "ERROR: you cannot enter a negative bet";
                 } else if (results.equals("-4")) {
                     resultingString = "ERROR: please enter a round number i.e. no decimals";
+                } else if (results.equals("-5")) {
+                    resultingString = "YOU SUCK AT GAMBLING, you have lost all your money, here's 50 free dollars for your addiction :)";
+                    view.setDiceBalanceTextField((double)50);
                 }
 
                 view.setDiceResultTextField(resultingString);
@@ -199,7 +206,7 @@ public class User{
                 results = serverResults[0];
                 String betOutcome = serverResults[1];
                 String currentBalance = serverResults[2];
-                System.out.println(diceRolled);
+                //System.out.println(diceRolled);
                 if(results.equals("1")){
                     try {
 

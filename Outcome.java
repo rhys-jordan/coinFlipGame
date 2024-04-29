@@ -15,11 +15,11 @@ public class Outcome extends Account{
             return -1;
         }
         else if(Objects.equals(outcome, betOption)){
-            System.out.println("YOU WIN!");
+            //System.out.println("YOU WIN!");
             return 1;
         }
         else{
-            System.out.println("YOU LOOSE!");
+            //System.out.println("YOU LOOSE!");
             return 0;
         }
     }
@@ -30,7 +30,7 @@ public class Outcome extends Account{
         try {
             connection = DriverManager.getConnection(uri);
             //Statement stmt = connection.createStatement();
-            System.out.println("new balance = " + newBalance + " username = " + username);
+            //System.out.println("new balance = " + newBalance + " username = " + username);
 
             String updateQuery = "UPDATE users " +
                     "SET balance = ? " +

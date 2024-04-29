@@ -100,6 +100,18 @@ public class ClientHandler implements Runnable{
             String betOutcome = game.flipCoin();
             int results = outcome.getResults(betType, betOutcome);
             double currentBalance = account.getAccountBalance();
+
+            if(bet > currentBalance) {
+                sendToClient("-2");
+                return;
+            } else if (bet < 0) {
+                sendToClient("-3");
+                return;
+            } else if (bet != (int)bet) {
+                sendToClient("-4");
+                return;
+            }
+
             String username = account.getUsername();
             String clientMsg;
             if(results != -1){
@@ -107,8 +119,17 @@ public class ClientHandler implements Runnable{
                     bet = -1*bet;
                 }
                 currentBalance = outcome.updateBalance(bet, currentBalance, username);
+
+                if(account.getAccountBalance() <= 0) {
+                    sendToClient("-5");
+                    currentBalance = 50;
+                    outcome.updateBalance(0, currentBalance, username);
+                    return;
+                }
+
                 account.setLocalBalance(currentBalance);
                 clientMsg = String.format("%d %s %g ", results, betOutcome, currentBalance);
+
                 sendToClient(clientMsg);
             }
             else{
@@ -126,6 +147,18 @@ public class ClientHandler implements Runnable{
             String betOutcome = game.rollDice();
             int results = outcome.getResults(betType, betOutcome);
             double currentBalance = account.getAccountBalance();
+
+            if(bet > currentBalance) {
+                sendToClient("-2");
+                return;
+            } else if (bet < 0) {
+                sendToClient("-3");
+                return;
+            } else if (bet != (int)bet) {
+                sendToClient("-4");
+                return;
+            }
+
             String username = account.getUsername();
             String clientMsg;
             if(results != -1){
@@ -136,6 +169,14 @@ public class ClientHandler implements Runnable{
                     bet = 3*bet;
                 }
                 currentBalance = outcome.updateBalance(bet, currentBalance, username);
+
+                if(account.getAccountBalance() <= 0) {
+                    sendToClient("-5");
+                    currentBalance = 50;
+                    outcome.updateBalance(0, currentBalance, username);
+                    return;
+                }
+
                 account.setLocalBalance(currentBalance);
                 clientMsg = String.format("%d %s %g ", results, betOutcome, currentBalance);
                 sendToClient(clientMsg);
@@ -149,7 +190,7 @@ public class ClientHandler implements Runnable{
     }
 
     public void processLeaderboard(){
-        System.out.println("display leaderboard");
+        //System.out.println("display leaderboard");
         String leaders;
         leaders = leaderboard.getTopThree();
 
