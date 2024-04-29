@@ -36,7 +36,6 @@ public class Account{
                 prepStmt.setInt(3,100);
                 prepStmt.setBoolean(4,false);
                 prepStmt.executeUpdate();
-                //connection.close();
             } catch (SQLException ex){
                 System.out.println("error");
                 ex.printStackTrace();
@@ -66,7 +65,6 @@ public class Account{
                         "WHERE users.username = ?;" ;
                 PreparedStatement prepStmt = connection.prepareStatement(exist);
                 prepStmt.setString(1, username);
-                //prepStmt.setString(2,password);
                 ResultSet results = prepStmt.executeQuery();
                 if (results.next()) {
                     int count = results.getInt(1);
@@ -113,7 +111,6 @@ public class Account{
                 if (results.next()) {
                     int id = results.getInt("id");
                     String user = results.getString("username");
-                    //System.out.println(user);
                     this.loggedIn = true;
                     this.username = user;
                     return 1;
@@ -138,7 +135,6 @@ public class Account{
     public double getAccountBalance() {
         try {
             connection = DriverManager.getConnection(uri);
-            //Statement stmt = connection.createStatement();
             String query = "SELECT users.balance " +
                     "FROM users " +
                     "WHERE users.username = ?;";

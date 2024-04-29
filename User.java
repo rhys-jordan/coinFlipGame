@@ -3,13 +3,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Objects;
-import java.util.Random;
 
 public class User{
 
@@ -37,7 +30,6 @@ public class User{
             String servermsg = String.format("leaderboard ");
             client.sendToServer(servermsg);
             String leaders = client.getFromServer();
-            //System.out.println(leaders);
             String[] leaderList = leaders.split(" ");
             if(leaderList.length < 6) {
                 view.model.addElement("ERROR: not enough users to display top 3 users");
@@ -56,7 +48,6 @@ public class User{
         }
     }
 
-    // GETS VALUES FROM BUTTON OPTIONS AND TEXT FIELD AND DOES ERROR CHECKING. NEED TO ADD SENDING TO DataBase
     class flipButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -92,7 +83,6 @@ public class User{
                 results = serverResults[0];
                 String betOutcome = serverResults[1];
                 String currentBalance = serverResults[2];
-                //System.out.println(coinfliped);
 
                 if (results.equals("1")) {
                     resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
@@ -105,13 +95,11 @@ public class User{
         }
     }
 
-    // GETS VALUES FROM USERNAME AND PASSWORD, SHOULD CHECK IF IN DB, IF TRUE THEN LOGGED IN
     class loginButtonListener implements  ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String username = view.getUsername();
             String password = view.getPassword();
-            //System.out.println("LOGIN BUTTON HIT");
             if(tabsMade) {
                 JOptionPane.showMessageDialog(view.jTabs, "You are already logged in");
             }
@@ -119,7 +107,6 @@ public class User{
                 String servermsg = String.format("login %s %s ", username, password);
 
                 client.sendToServer(servermsg);
-                //System.out.println("client> Sent");
                 String loggedin = client.getFromServer();
 
                 if (loggedin.equals("-1")) {
@@ -153,13 +140,12 @@ public class User{
 
                 client.sendToServer(servermsg);
                 String validAccountCreated = client.getFromServer();
-                //System.out.println(validAccountCreated);
                 if (validAccountCreated.equals("1")) {
-                    JOptionPane.showMessageDialog(view.jTabs, "Account Created");
+                    JOptionPane.showMessageDialog(view.jTabs, "Account Created, please click login with login information entered");
                 } else if (validAccountCreated.equals("-1")) {
                     JOptionPane.showMessageDialog(view.jTabs, "Please enter something in both fields");
                 } else if (validAccountCreated.equals("0")) {
-                    JOptionPane.showMessageDialog(view.jTabs, "Account already exists please login");
+                    JOptionPane.showMessageDialog(view.jTabs, "Account already exists, please login");
                 } else {
                     JOptionPane.showMessageDialog(view.jTabs, "Error please restart game");
                 }
@@ -167,7 +153,6 @@ public class User{
         }
     }
 
-    //DICE GAME LOGIC
     class rollDiceButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -206,14 +191,14 @@ public class User{
                 results = serverResults[0];
                 String betOutcome = serverResults[1];
                 String currentBalance = serverResults[2];
-                //System.out.println(diceRolled);
                 if(results.equals("1")){
                     try {
 
                     } catch (NumberFormatException ex) {
-                        System.out.println("ERROR, couldnt convert bet string to int");
+                        System.out.println("ERROR, couldn't convert bet string to int");
                     }
-                    //betAmount = 3*betAmount;
+                    int currentBet = Integer.parseInt(betAmount)*3;
+                    betAmount = String.valueOf(currentBet);
                     resultingString = "Result = " + betOutcome + ", you win " + betAmount + " dollars!";
                 }
                 else if(results.equals("0")){

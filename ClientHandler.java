@@ -31,7 +31,6 @@ public class ClientHandler implements Runnable{
                 BufferedReader clientMessage = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 System.out.println("server> waiting for client to send data");
                 String msg = clientMessage.readLine();
-                //System.out.println(msg);
                 System.out.println("server> received: " + msg);
                 processInput(msg);
             }
@@ -60,7 +59,6 @@ public class ClientHandler implements Runnable{
 
     public void processInput(String msgFromClient){
         String[] splitMsg = msgFromClient.split(" ");
-        //System.out.println(splitMsg[0]);
 
         if(splitMsg.length < 3){
             if(splitMsg[0].equals("leaderboard")){
@@ -84,13 +82,11 @@ public class ClientHandler implements Runnable{
 
     public void processLogin(String username, String password){
         int loggedin = account.login(username, password);
-        //System.out.println(loggedin);
         sendToClient(Integer.toString(loggedin));
     }
 
     public void processCreateAccount(String username, String password){
         int accountCreated = account.createAccount(username, password);
-        //System.out.println(accountCreated);
         sendToClient(Integer.toString(accountCreated));
     }
 
@@ -190,11 +186,9 @@ public class ClientHandler implements Runnable{
     }
 
     public void processLeaderboard(){
-        //System.out.println("display leaderboard");
         String leaders;
         leaders = leaderboard.getTopThree();
 
-        //System.out.println(leaders);
         if(!leaders.isEmpty()){
             sendToClient(leaders);
         }

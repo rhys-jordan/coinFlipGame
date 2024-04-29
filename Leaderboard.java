@@ -3,7 +3,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class Leaderboard{
     protected String uri = "jdbc:sqlite:userDatabase.db";
     protected Connection connection = null;

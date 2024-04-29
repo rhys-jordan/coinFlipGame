@@ -2,7 +2,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
 
 public class View {
 
@@ -28,7 +27,6 @@ public class View {
     private JTextField resultTextField;
     private JTextField currentBalanceTextField;
 
-    // GUI ELEMENTS FOR DICE TAB
     private JTextField diceBetTextField;
     private JTextField diceResultTextField;
     private JTextField diceBalanceTextField;
@@ -51,6 +49,7 @@ public class View {
 
         jFrame.add(jTabs);
         jFrame.setSize(600,500);
+        jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
     }
 
@@ -270,7 +269,6 @@ public class View {
         return dicePanel;
     }
 
-    //STUFF FOR LOGIN TAB
     void setLoginButtonListener(ActionListener aL) {
         loginButton.addActionListener(aL);
     }
@@ -283,7 +281,6 @@ public class View {
         return passwordTextField.getText();
     }
 
-    // LISTENERS AND GETTERS(relevant functions) FOR GAME TAB
     void setFlipButtonListener(ActionListener aL) {
         flipButton.addActionListener(aL);
     }

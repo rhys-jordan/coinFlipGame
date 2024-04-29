@@ -3,8 +3,3 @@ public class Main {
         User user = new User();
     }
 }
-
-//TODO
-    // threaded server x _ x
-    // Error checking
-    // Delete Unneeded code
