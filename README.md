@@ -5,6 +5,16 @@ This project was the final project for a software engineering course.
 
 ## Getting Started
 
+Must download slf4j-api-1.7.36.jar from https://github.com/xerial/sqlite-jdbc?tab=readme-ov-file 
+put this file in same files as download
+Install node.js 
+run on command.
+Run Sever, Run Main
+node Server.js
+node Main.js
+
+known bugs: Won't stop running program if you hit "x" button in the application. 
+
 These instructions will give you a copy of the project up and running on
 your local machine for development and testing purposes. See deployment
 for notes on deploying the project on a live system.
