@@ -2,7 +2,7 @@
 
 ## Description 
 * This project is in Java
-* It uses an SQLite database
+* Uses an SQLite database
 * Was completed in a team of two
 * Used agile development with multiple sprints
   
