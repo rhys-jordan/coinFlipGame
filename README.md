@@ -12,10 +12,11 @@ This project was the final project for a software engineering course. This game 
 Must download slf4j-api-1.7.36.jar from https://github.com/xerial/sqlite-jdbc?tab=readme-ov-file  and put this file in same files as downloaded code.
 Also install node.js
 First must run Server.js
-'''
+
+```
 node Server.js
-'''
+```
 Then run Main.js 
-'''
+```
 node Main.js
-'''
+```
