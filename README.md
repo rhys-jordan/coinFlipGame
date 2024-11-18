@@ -14,3 +14,6 @@ This project was the final project for a software engineering course. This game 
 * Must make .jar file a dependancy in intellij
 * First run Server.js
 * Then run Main.js
+
+### Known Bugs
+* Exiting the game with the "X" in the GUI does not end Main.js
